@@ -1,0 +1,32 @@
+@startuml core-domain-initial
+skinparam packageStyle rectangle
+
+package Reflection {
+    package {
+        usecase Part
+        usecase "Year In" as YearIn
+        usecase "Year Out" as YearOut
+    }
+    usecase Event
+    usecase "World event" as WorldEvent
+    usecase "Personal event" as PersonalEvent
+    usecase Feeling
+    usecase Motto
+    usecase Source
+}
+
+Event <|-- WorldEvent : is-an <
+Event <|-- PersonalEvent : is-an <
+Feeling "1" *- "0..*" PersonalEvent : references >
+WorldEvent "1" *-- "0..*" Source : references <
+Part <|-- YearIn : is-a <
+Part <|-- YearOut : is-a <
+YearIn "1" *- "*" WorldEvent : has >
+YearIn "1" *-- "*" PersonalEvent : has >
+YearIn "1" *-- "*" Feeling : has >
+YearIn "1" *-- "1" Motto : has >
+YearOut "1" *-- "*" PersonalEvent : has >
+YearOut "1" *-- "*" Feeling : has >
+YearOut "1" *-- "1" Motto : has >
+
+@enduml
