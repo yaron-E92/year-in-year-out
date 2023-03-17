@@ -6,7 +6,7 @@
 
 The entities in the core domain:
 
-- Event
+- ReflectionEvent
   - World event (outside of the circles)
   - Personal event (outer circle)
 - Feeling (middle circle)
