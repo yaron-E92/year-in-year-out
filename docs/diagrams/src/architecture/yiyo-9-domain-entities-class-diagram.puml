@@ -2,44 +2,73 @@
 skinparam packageStyle rectangle
 
 package Reflection {
+
+    abstract class Entity {
+        -_requestedHashCode : int?
+        +Id : int
+        +bool Equals(object? obj)
+        +int GetHashCode()
+    }
+
+    abstract class ValueObject {
+        #{abstract} IEnumerable<object> GetEqualityComponents()
+        +bool Equals(object? obj)
+        +int GetHashCode()
+    }
+
     package {
         abstract class Part {
-            +Id : int
             +PersonalEvents : IList<PersonalEvent>
             +Feelings : IList<Feeling>
             +Motto : Motto
         }
+
         class "Year In" as YearIn {
             +WorldEvents : IList<WorldEvent>
         }
+
         class "Year Out" as YearOut
     }
+
     abstract class ReflectionEvent {
-        +Id : int
+        +Title : string
     }
+
     class "World event" as WorldEvent {
         +Sources : IList<Source>
     }
+
     class "Personal event" as PersonalEvent
     class Feeling {
-        +Id : int
+        +Title : string
+        +Description : string
         +PersonalEvents : IList<PersonalEvent>
     }
+
     class Motto {
-        +Id : int
         +Content : string
     }
+
     class Source {
-        +Url
+        +Url : Uri
+        +Source(Uri url)
+        +Source(string url)
+        #IEnumerable<object> GetEqualityComponents()
     }
+
 }
 
-ReflectionEvent <|-- WorldEvent : is-an <
-ReflectionEvent <|-- PersonalEvent : is-an <
+Entity <|-- Part
+Entity <|-- ReflectionEvent
+Entity <|-- Feeling
+Entity <|-- Motto
+ValueObject <|-- Source
+ReflectionEvent <|-- WorldEvent
+ReflectionEvent <|-- PersonalEvent
 Feeling "1" *- "0..*" PersonalEvent : references >
 WorldEvent "1" *-- "0..*" Source : references <
-Part <|-- YearIn : is-a <
-Part <|-- YearOut : is-a <
+Part <|-- YearIn
+Part <|-- YearOut
 YearIn "1" *- "*" WorldEvent : has >
 YearIn "1" *-- "*" PersonalEvent : has >
 YearIn "1" *-- "*" Feeling : has >
