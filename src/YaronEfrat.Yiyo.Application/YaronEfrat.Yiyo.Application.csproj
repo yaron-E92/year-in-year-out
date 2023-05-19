@@ -8,6 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="12.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain.Reflection\YaronEfrat.Yiyo.Domain.Reflection.csproj" />
   </ItemGroup>
 
 </Project>
