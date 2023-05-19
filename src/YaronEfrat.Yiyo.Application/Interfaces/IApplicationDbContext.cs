@@ -3,6 +3,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
+using YaronEfrat.Yiyo.Application.Models;
+
 namespace YaronEfrat.Yiyo.Application.Interfaces;
 
 public interface IApplicationDbContext
@@ -18,6 +20,8 @@ public interface IApplicationDbContext
     DbSet<MottoEntity> Mottos { get; }
 
     DbSet<PersonalEventEntity> PersonalEvents { get; }
+
+    DbSet<SourceEntity> Sources { get; }
 
     DbSet<WorldEventEntity> WorldEvents { get; }
 
