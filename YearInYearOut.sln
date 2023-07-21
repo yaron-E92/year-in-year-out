@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YaronEfrat.Yiyo.Domain.Refl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YaronEfrat.Yiyo.Application", "src\YaronEfrat.Yiyo.Application\YaronEfrat.Yiyo.Application.csproj", "{CC9590A8-F3D0-448E-A07E-41114ED80963}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YaronEfrat.Yiyo.Application.UnitTests", "tests\YaronEfrat.Yiyo.Application.UnitTests\YaronEfrat.Yiyo.Application.UnitTests.csproj", "{036AF25E-213F-4250-AA4B-AD86F591C2DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{CC9590A8-F3D0-448E-A07E-41114ED80963}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC9590A8-F3D0-448E-A07E-41114ED80963}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC9590A8-F3D0-448E-A07E-41114ED80963}.Release|Any CPU.Build.0 = Release|Any CPU
+		{036AF25E-213F-4250-AA4B-AD86F591C2DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{036AF25E-213F-4250-AA4B-AD86F591C2DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{036AF25E-213F-4250-AA4B-AD86F591C2DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{036AF25E-213F-4250-AA4B-AD86F591C2DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
