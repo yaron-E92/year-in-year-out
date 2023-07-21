@@ -40,8 +40,8 @@ internal class GetFeelingQueryHandlerTests
         feeling.ID.Should().Be(id);
     }
 
-    [TestCase("Happy")]
-    [TestCase("Sad")]
+    [TestCase(DbEntitiesTestCases.Happy)]
+    [TestCase(DbEntitiesTestCases.Sad)]
     public async Task Should_ReturnCorrectFeeling_When_SearchingForExistingTitle(string title)
     {
         // Act
