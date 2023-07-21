@@ -23,15 +23,21 @@ internal class GetFeelingQueryHandlerTests
     {
         _dbContextMock = new Mock<IApplicationDbContext>();
 
-        var queryable =  FeelingTestCases.Feelings.AsQueryable();
-        var dbSetMock = new Mock<DbSet<FeelingEntity>>();
+        Mock<DbSet<FeelingEntity>> dbSetMock = DbSetMock();
+        _dbContextMock.Setup(mock => mock.Feelings)
+            .Returns(dbSetMock.Object);
+        _getFeelingQueryHandler = new GetFeelingQueryHandler(_dbContextMock.Object);
+    }
+
+    private static Mock<DbSet<FeelingEntity>> DbSetMock()
+    {
+        IQueryable<FeelingEntity> queryable = FeelingTestCases.Feelings.AsQueryable();
+        Mock<DbSet<FeelingEntity>> dbSetMock = new();
         dbSetMock.As<IQueryable<FeelingEntity>>().Setup(m => m.Provider).Returns(queryable.Provider);
         dbSetMock.As<IQueryable<FeelingEntity>>().Setup(m => m.Expression).Returns(queryable.Expression);
         dbSetMock.As<IQueryable<FeelingEntity>>().Setup(m => m.ElementType).Returns(queryable.ElementType);
         dbSetMock.As<IQueryable<FeelingEntity>>().Setup(m => m.GetEnumerator()).Returns(() => queryable.GetEnumerator());
-        _dbContextMock.Setup(mock => mock.Feelings)
-            .Returns(dbSetMock.Object);
-        _getFeelingQueryHandler = new GetFeelingQueryHandler(_dbContextMock.Object);
+        return dbSetMock;
     }
 
     [TestCase(1)]
@@ -45,6 +51,17 @@ internal class GetFeelingQueryHandlerTests
         feeling.ID.Should().Be(id);
     }
 
+    [TestCase("Happy")]
+    [TestCase("Sad")]
+    public async Task Should_ReturnCorrectFeeling_When_SearchingForExistingTitle(string title)
+    {
+        // Act
+        FeelingEntity feeling = await _getFeelingQueryHandler.Handle(new GetFeelingQuery { Title = title });
+
+        // Assert
+        feeling.Title.Should().Be(title);
+    }
+
     [TestCase(-1)]
     [TestCase(0)]
     [TestCase(100000)]
@@ -52,6 +69,17 @@ internal class GetFeelingQueryHandlerTests
     {
         // Act
         FeelingEntity feeling = await _getFeelingQueryHandler.Handle(new GetFeelingQuery { Id = id });
+
+        // Assert
+        feeling.Should().BeNull();
+    }
+
+    [TestCase("Nothing")]
+    [TestCase("")]
+    public async Task Should_ReturnNull_When_SearchingForNonExistantTitle(string title)
+    {
+        // Act
+        FeelingEntity feeling = await _getFeelingQueryHandler.Handle(new GetFeelingQuery { Title = title });
 
         // Assert
         feeling.Should().BeNull();
