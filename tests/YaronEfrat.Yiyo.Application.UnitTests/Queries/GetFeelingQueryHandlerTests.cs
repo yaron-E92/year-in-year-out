@@ -23,21 +23,10 @@ internal class GetFeelingQueryHandlerTests
     {
         _dbContextMock = new Mock<IApplicationDbContext>();
 
-        Mock<DbSet<FeelingEntity>> dbSetMock = DbSetMock();
+        Mock<DbSet<FeelingEntity>> dbSetMock = TestFixtures.DbSetMock(DbEntitiesTestCases.Feelings);
         _dbContextMock.Setup(mock => mock.Feelings)
             .Returns(dbSetMock.Object);
         _getFeelingQueryHandler = new GetFeelingQueryHandler(_dbContextMock.Object);
-    }
-
-    private static Mock<DbSet<FeelingEntity>> DbSetMock()
-    {
-        IQueryable<FeelingEntity> queryable = FeelingTestCases.Feelings.AsQueryable();
-        Mock<DbSet<FeelingEntity>> dbSetMock = new();
-        dbSetMock.As<IQueryable<FeelingEntity>>().Setup(m => m.Provider).Returns(queryable.Provider);
-        dbSetMock.As<IQueryable<FeelingEntity>>().Setup(m => m.Expression).Returns(queryable.Expression);
-        dbSetMock.As<IQueryable<FeelingEntity>>().Setup(m => m.ElementType).Returns(queryable.ElementType);
-        dbSetMock.As<IQueryable<FeelingEntity>>().Setup(m => m.GetEnumerator()).Returns(() => queryable.GetEnumerator());
-        return dbSetMock;
     }
 
     [TestCase(1)]

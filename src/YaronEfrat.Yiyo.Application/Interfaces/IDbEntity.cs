@@ -1,6 +1,6 @@
 ﻿namespace YaronEfrat.Yiyo.Application.Interfaces;
 
-internal interface IDbEntity
+public interface IDbEntity
 {
     int ID { get; }
 }

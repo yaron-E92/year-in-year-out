@@ -1,7 +1,7 @@
 ﻿using YaronEfrat.Yiyo.Application.Models;
 
 namespace YaronEfrat.Yiyo.Application.UnitTests.Queries;
-internal class FeelingTestCases
+internal class DbEntitiesTestCases
 {
     internal static readonly IReadOnlyList<FeelingEntity> Feelings = new List<FeelingEntity>()
     {
@@ -14,6 +14,20 @@ internal class FeelingTestCases
         {
             ID = 2,
             Title = "Happy",
+        },
+    };
+
+    internal static readonly IReadOnlyList<MottoEntity> Mottos = new List<MottoEntity>()
+    {
+        new()
+        {
+            ID = 1,
+            Content  = "I am a motto",
+        },
+        new()
+        {
+            ID = 2,
+            Content = "Inspirational quote",
         },
     };
 }
