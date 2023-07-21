@@ -10,6 +10,9 @@ internal class DbEntitiesTestCases
     public const string MovedToBerlin = "Moved to Berlin";
     public const string SawTheMoon = "Saw the moon";
 
+    public static readonly Uri Source1 = new("http://source1.net");
+    public static readonly Uri Source2 = new("http://source2.net");
+
     internal static readonly IReadOnlyList<FeelingEntity> Feelings = new List<FeelingEntity>()
     {
         new()
@@ -49,6 +52,20 @@ internal class DbEntitiesTestCases
         {
             ID = 2,
             Title = SawTheMoon,
+        },
+    };
+
+    internal static readonly IReadOnlyList<SourceEntity> Sources = new List<SourceEntity>()
+    {
+        new()
+        {
+            ID = 1,
+            Url  = Source1,
+        },
+        new()
+        {
+            ID = 2,
+            Url  = Source2,
         },
     };
 }

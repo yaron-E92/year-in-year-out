@@ -12,21 +12,21 @@ using YaronEfrat.Yiyo.Application.Queries;
 
 namespace YaronEfrat.Yiyo.Application.UnitTests.Queries;
 
-internal class GetMottoQueryHandlerTests
+internal class GetSourceQueryHandlerTests
 {
     private Mock<IApplicationDbContext> _dbContextMock;
 
-    private GetMottoQueryHandler _getMottoQueryHandler;
+    private GetSourceQueryHandler _getSourceQueryHandler;
 
     [SetUp]
     public void SetUp()
     {
         _dbContextMock = new Mock<IApplicationDbContext>();
 
-        Mock<DbSet<MottoEntity>> dbSetMock = TestFixtures.DbSetMock(DbEntitiesTestCases.Mottos);
-        _dbContextMock.Setup(mock => mock.Mottos)
+        Mock<DbSet<SourceEntity>> dbSetMock = TestFixtures.DbSetMock(DbEntitiesTestCases.Sources);
+        _dbContextMock.Setup(mock => mock.Sources)
             .Returns(dbSetMock.Object);
-        _getMottoQueryHandler = new GetMottoQueryHandler(_dbContextMock.Object);
+        _getSourceQueryHandler = new GetSourceQueryHandler(_dbContextMock.Object);
     }
 
     [TestCase(1)]
@@ -34,10 +34,10 @@ internal class GetMottoQueryHandlerTests
     public async Task Should_ReturnCorrectFeeling_When_SearchingForExistingId(int id)
     {
         // Act
-        MottoEntity motto = await _getMottoQueryHandler.Handle(new GetMottoQuery {Id = id});
+        SourceEntity source = await _getSourceQueryHandler.Handle(new GetSourceQuery {Id = id});
 
         // Assert
-        motto.ID.Should().Be(id);
+        source.ID.Should().Be(id);
     }
 
     [TestCase(-1)]
@@ -46,9 +46,9 @@ internal class GetMottoQueryHandlerTests
     public async Task Should_ReturnNull_When_SearchingForNonExistantId(int id)
     {
         // Act
-        MottoEntity motto = await _getMottoQueryHandler.Handle(new GetMottoQuery { Id = id });
+        SourceEntity source = await _getSourceQueryHandler.Handle(new GetSourceQuery { Id = id });
 
         // Assert
-        motto.Should().BeNull();
+        source.Should().BeNull();
     }
 }
