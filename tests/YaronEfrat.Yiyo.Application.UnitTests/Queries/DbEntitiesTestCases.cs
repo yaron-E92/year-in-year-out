@@ -96,4 +96,16 @@ internal class DbEntitiesTestCases
             ID = 2,
         },
     };
+
+    internal static readonly IReadOnlyList<YearOutEntity> YearOuts = new List<YearOutEntity>
+    {
+        new()
+        {
+            ID = 1,
+        },
+        new()
+        {
+            ID = 2,
+        },
+    };
 }
