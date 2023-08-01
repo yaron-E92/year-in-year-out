@@ -1,0 +1,13 @@
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+using YaronEfrat.Yiyo.Application.Interfaces;
+
+namespace YaronEfrat.Yiyo.Application.Models;
+
+public class SourceEntity : IDbEntity
+{
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int ID { get; set; }
+
+    public Uri Url { get; set; }
+}
