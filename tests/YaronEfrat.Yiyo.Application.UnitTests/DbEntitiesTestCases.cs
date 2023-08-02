@@ -1,6 +1,6 @@
 ﻿using YaronEfrat.Yiyo.Application.Models;
 
-namespace YaronEfrat.Yiyo.Application.UnitTests.Queries;
+namespace YaronEfrat.Yiyo.Application.UnitTests;
 internal class DbEntitiesTestCases
 {
     public const string Sad = "Sad";
@@ -21,11 +21,15 @@ internal class DbEntitiesTestCases
         {
             ID = 1,
             Title = Sad,
+            Description = Sad,
+            PersonalEvents = new List<PersonalEventEntity>(),
         },
         new()
         {
             ID = 2,
             Title = Happy,
+            Description = Happy,
+            PersonalEvents = new List<PersonalEventEntity>(),
         },
     };
 
@@ -107,5 +111,31 @@ internal class DbEntitiesTestCases
         {
             ID = 2,
         },
+    };
+
+    internal static readonly IList<FeelingEntity> InvalidFeelings = new List<FeelingEntity>
+    {
+        new()
+        {
+            ID = -1,
+            Title = Sad,
+            Description = Sad,
+            PersonalEvents = new List<PersonalEventEntity>(),
+        },
+        new()
+        {
+            ID = 2,
+            Title = null,
+            Description = Happy,
+            PersonalEvents = new List<PersonalEventEntity>(),
+        },
+        new()
+        {
+            ID = 2,
+            Title = null,
+            Description = Happy,
+            PersonalEvents = null,
+        },
+        null,
     };
 }
