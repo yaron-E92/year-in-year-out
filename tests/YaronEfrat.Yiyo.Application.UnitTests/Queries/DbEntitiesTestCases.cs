@@ -15,7 +15,7 @@ internal class DbEntitiesTestCases
     public static readonly Uri Source1 = new("http://source1.net");
     public static readonly Uri Source2 = new("http://source2.net");
 
-    internal static readonly IReadOnlyList<FeelingEntity> Feelings = new List<FeelingEntity>
+    internal static readonly IList<FeelingEntity> Feelings = new List<FeelingEntity>
     {
         new()
         {
@@ -29,7 +29,7 @@ internal class DbEntitiesTestCases
         },
     };
 
-    internal static readonly IReadOnlyList<MottoEntity> Mottos = new List<MottoEntity>
+    internal static readonly IList<MottoEntity> Mottos = new List<MottoEntity>
     {
         new()
         {
@@ -43,7 +43,7 @@ internal class DbEntitiesTestCases
         },
     };
 
-    internal static readonly IReadOnlyList<PersonalEventEntity> PersonalEvents = new List<PersonalEventEntity>
+    internal static readonly IList<PersonalEventEntity> PersonalEvents = new List<PersonalEventEntity>
     {
         new()
         {
@@ -57,7 +57,7 @@ internal class DbEntitiesTestCases
         },
     };
 
-    internal static readonly IReadOnlyList<SourceEntity> Sources = new List<SourceEntity>
+    internal static readonly IList<SourceEntity> Sources = new List<SourceEntity>
     {
         new()
         {
@@ -71,7 +71,7 @@ internal class DbEntitiesTestCases
         },
     };
 
-    internal static readonly IReadOnlyList<WorldEventEntity> WorldEvents = new List<WorldEventEntity>
+    internal static readonly IList<WorldEventEntity> WorldEvents = new List<WorldEventEntity>
     {
         new()
         {
@@ -85,7 +85,7 @@ internal class DbEntitiesTestCases
         },
     };
 
-    internal static readonly IReadOnlyList<YearInEntity> YearIns = new List<YearInEntity>
+    internal static readonly IList<YearInEntity> YearIns = new List<YearInEntity>
     {
         new()
         {
@@ -97,7 +97,7 @@ internal class DbEntitiesTestCases
         },
     };
 
-    internal static readonly IReadOnlyList<YearOutEntity> YearOuts = new List<YearOutEntity>
+    internal static readonly IList<YearOutEntity> YearOuts = new List<YearOutEntity>
     {
         new()
         {
