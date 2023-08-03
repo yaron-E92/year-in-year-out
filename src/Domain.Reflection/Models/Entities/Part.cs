@@ -7,4 +7,10 @@ public abstract class Part : Entity
     public IList<Feeling> Feelings { get; set; }
 
     public Motto Motto { get; set; }
+
+    public override void Validate()
+    {
+        base.Validate();
+        throw new NotImplementedException();
+    }
 }

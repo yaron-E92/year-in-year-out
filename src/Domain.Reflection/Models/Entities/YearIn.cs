@@ -3,4 +3,10 @@
 public class YearIn : Part
 {
     public IList<WorldEvent> WorldEvents { get; set; }
+
+    public override void Validate()
+    {
+        base.Validate();
+        throw new NotImplementedException();
+    }
 }

@@ -1,4 +1,6 @@
-﻿namespace YaronEfrat.Yiyo.Domain.Reflection.Models;
+﻿using YaronEfrat.Yiyo.Domain.Reflection.Models.Exceptions;
+
+namespace YaronEfrat.Yiyo.Domain.Reflection.Models;
 
 public abstract class Entity
 {
@@ -22,5 +24,13 @@ public abstract class Entity
         // XOR for random distribution. See:
         // https://learn.microsoft.com/archive/blogs/ericlippert/guidelines-and-rules-for-gethashcode
         return _requestedHashCode.Value;
+    }
+
+    public virtual void Validate()
+    {
+        if (Id < 0)
+        {
+            throw new EntityException("Id must be non negative");
+        }
     }
 }
