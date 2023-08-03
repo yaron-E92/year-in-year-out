@@ -41,6 +41,7 @@ internal class AddFeelingCommandHandlerTests
     public async Task Should_PopulateCorrectFeelingInContext_When_ValidAndNonExisting(FeelingEntity feelingEntity)
     {
         // Arrange
+        feelingEntity.ID = 0; // Indicate non existing
         AddFeelingCommand addFeelingCommand = new() { FeelingEntity = feelingEntity };
 
         // Act
@@ -48,7 +49,10 @@ internal class AddFeelingCommandHandlerTests
 
         // Assert
         _dbSetMock.Object.Should().Contain(f => f.Equals(feelingEntity));
-        feeling.Should().Be(feelingEntity);
+        feeling.ID.Should().BeGreaterThan(0);
+        feeling.Title.Should().Be(feelingEntity.Title.Trim());
+        feeling.Description.Should().Be(feelingEntity.Description.Trim());
+        feeling.PersonalEvents.Should().BeEquivalentTo(feelingEntity.PersonalEvents);
     }
 
     [TestCaseSource(typeof(DbEntitiesTestCases), nameof(DbEntitiesTestCases.Feelings))]
