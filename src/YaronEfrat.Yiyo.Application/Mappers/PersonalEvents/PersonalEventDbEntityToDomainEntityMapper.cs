@@ -8,6 +8,6 @@ public class PersonalEventDbEntityToDomainEntityMapper : IDbEntityToDomainEntity
 {
     public PersonalEvent Map(PersonalEventEntity dbEntity)
     {
-        throw new NotImplementedException();
+        return new PersonalEvent {Title = dbEntity.Title};
     }
 }
