@@ -1,5 +1,7 @@
 ﻿using MediatR;
 
+using Microsoft.EntityFrameworkCore;
+
 using YaronEfrat.Yiyo.Application.Interfaces;
 using YaronEfrat.Yiyo.Application.Models;
 
@@ -25,11 +27,12 @@ public class GetFeelingQueryHandler : IRequestHandler<GetFeelingQuery, FeelingEn
     {
         if (request.Id > 0)
         {
-            return _context.Feelings.SingleOrDefault(feel => feel.ID.Equals(request.Id))!;
+            return (await _context.Feelings.SingleOrDefaultAsync(
+                feel => feel.ID.Equals(request.Id), cancellationToken))!;
         }
 
         return (!string.IsNullOrWhiteSpace(request.Title)
-            ? _context.Feelings.SingleOrDefault(feel => feel.Title.Equals(request.Title))
+            ? await _context.Feelings.SingleOrDefaultAsync(feel => feel.Title.Equals(request.Title), cancellationToken)
             : null)!;
     }
 }

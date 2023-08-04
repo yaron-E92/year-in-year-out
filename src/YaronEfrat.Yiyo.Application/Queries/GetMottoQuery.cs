@@ -1,5 +1,7 @@
 ﻿using MediatR;
 
+using Microsoft.EntityFrameworkCore;
+
 using YaronEfrat.Yiyo.Application.Interfaces;
 using YaronEfrat.Yiyo.Application.Models;
 
@@ -21,6 +23,6 @@ public class GetMottoQueryHandler : IRequestHandler<GetMottoQuery, MottoEntity>
 
     public async Task<MottoEntity> Handle(GetMottoQuery request, CancellationToken cancellationToken = default)
     {
-        return _context.Mottos.SingleOrDefault(motto => motto.ID.Equals(request.Id))!;
+        return (await _context.Mottos.SingleOrDefaultAsync(motto => motto.ID.Equals(request.Id), cancellationToken))!;
     }
 }

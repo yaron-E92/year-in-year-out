@@ -1,5 +1,7 @@
 ﻿using MediatR;
 
+using Microsoft.EntityFrameworkCore;
+
 using YaronEfrat.Yiyo.Application.Interfaces;
 using YaronEfrat.Yiyo.Application.Models;
 
@@ -21,6 +23,7 @@ public class GetSourceQueryHandler : IRequestHandler<GetSourceQuery, SourceEntit
 
     public async Task<SourceEntity> Handle(GetSourceQuery request, CancellationToken cancellationToken = default)
     {
-        return _context.Sources.SingleOrDefault(source => source.ID.Equals(request.Id))!;
+        return (await _context.Sources.SingleOrDefaultAsync(source => source.ID.Equals(request.Id),
+            cancellationToken))!;
     }
 }

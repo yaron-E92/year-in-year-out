@@ -1,5 +1,7 @@
 ﻿using MediatR;
 
+using Microsoft.EntityFrameworkCore;
+
 using YaronEfrat.Yiyo.Application.Interfaces;
 using YaronEfrat.Yiyo.Application.Models;
 
@@ -25,11 +27,12 @@ public class GetWorldEventQueryHandler : IRequestHandler<GetWorldEventQuery, Wor
     {
         if (request.Id > 0)
         {
-            return _context.WorldEvents.SingleOrDefault(pe => pe.ID.Equals(request.Id))!;
+            return (await _context.WorldEvents.SingleOrDefaultAsync(we => we.ID.Equals(request.Id),
+                cancellationToken))!;
         }
 
         return (!string.IsNullOrWhiteSpace(request.Title)
-            ? _context.WorldEvents.SingleOrDefault(pe => pe.Title.Equals(request.Title))
+            ? await _context.WorldEvents.SingleOrDefaultAsync(we => we.Title.Equals(request.Title), cancellationToken)
             : null)!;
     }
 }
