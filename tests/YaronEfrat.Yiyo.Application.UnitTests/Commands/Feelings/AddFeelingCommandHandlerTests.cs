@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-using FluentAssertions;
+﻿using FluentAssertions;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -10,7 +8,10 @@ using NUnit.Framework;
 
 using YaronEfrat.Yiyo.Application.Commands.Feelings;
 using YaronEfrat.Yiyo.Application.Interfaces;
+using YaronEfrat.Yiyo.Application.Mappers.Feelings;
+using YaronEfrat.Yiyo.Application.Mappers.PersonalEvents;
 using YaronEfrat.Yiyo.Application.Models;
+using YaronEfrat.Yiyo.Domain.Reflection.Models.Exceptions;
 
 namespace YaronEfrat.Yiyo.Application.UnitTests.Commands.Feelings;
 
@@ -26,8 +27,11 @@ internal class AddFeelingCommandHandlerTests
     {
         _dbContextMock = new Mock<IApplicationDbContext>();
 
-        InitializeDbSet(DbEntitiesTestCases.Feelings);
-        _addFeelingCommandHandler = new AddFeelingCommandHandler(_dbContextMock.Object);
+        InitializeDbSet(new List<FeelingEntity>());
+
+        _addFeelingCommandHandler = new AddFeelingCommandHandler(_dbContextMock.Object,
+            new FeelingDbEntityToDomainEntityMapper(new PersonalEventDbEntityToDomainEntityMapper()),
+            new FeelingDomainEntityToDbEntityMapper(new PersonalEventDomainEntityToDbEntityMapper()));
     }
 
     private void InitializeDbSet(IList<FeelingEntity> feelingEntities)
@@ -41,14 +45,19 @@ internal class AddFeelingCommandHandlerTests
     public async Task Should_PopulateCorrectFeelingInContext_When_ValidAndNonExisting(FeelingEntity feelingEntity)
     {
         // Arrange
+        int originalId = feelingEntity.ID; // For mocking the db generating id
         feelingEntity.ID = 0; // Indicate non existing
         AddFeelingCommand addFeelingCommand = new() { FeelingEntity = feelingEntity };
+        _dbContextMock.Setup(cm => cm.SaveChangesAsync(default)).Callback(() =>
+            _dbContextMock.Object.Feelings.Single(f => f.Title.Equals(feelingEntity.Title)).ID = originalId); // Mocking id generation
 
         // Act
         FeelingEntity feeling = await _addFeelingCommandHandler.Handle(addFeelingCommand);
 
         // Assert
         _dbSetMock.Object.Should().Contain(f => f.Equals(feelingEntity));
+        _dbSetMock.Verify(dsm => dsm.AddAsync(feelingEntity, default), Times.Once);
+        _dbContextMock.Verify(cm => cm.SaveChangesAsync(default), Times.Once);
         feeling.ID.Should().BeGreaterThan(0);
         feeling.Title.Should().Be(feelingEntity.Title.Trim());
         feeling.Description.Should().Be(feelingEntity.Description.Trim());
@@ -59,6 +68,7 @@ internal class AddFeelingCommandHandlerTests
     public async Task Should_DoNothingAndReturnNull_When_ExistingFeeling(FeelingEntity feelingEntity)
     {
         // Arrange
+        InitializeDbSet(DbEntitiesTestCases.Feelings);
         AddFeelingCommand addFeelingCommand = new() { FeelingEntity = feelingEntity };
 
         // Act
@@ -70,27 +80,61 @@ internal class AddFeelingCommandHandlerTests
     }
 
     [TestCaseSource(typeof(DbEntitiesTestCases), nameof(DbEntitiesTestCases.InvalidFeelings))]
-    public async Task Should_ReturnNull_When_NonValidFeeling(FeelingEntity feelingEntity)
+    public async Task Should_ThrowFeelingException_When_NonValidFeeling(FeelingEntity feelingEntity)
     {
         // Arrange
         AddFeelingCommand addFeelingCommand = new() { FeelingEntity = feelingEntity };
 
         // Act
-        FeelingEntity feeling = await _addFeelingCommandHandler.Handle(addFeelingCommand);
+        Func<Task> handleCommandAction = async () => await _addFeelingCommandHandler.Handle(addFeelingCommand);
 
         // Assert
-        _dbSetMock.Object.Should().BeEquivalentTo(DbEntitiesTestCases.Feelings);
-        feeling.Should().BeNull();
+        await handleCommandAction.Should().ThrowAsync<FeelingException>();
+        _dbSetMock.Object.Should().BeEmpty();
     }
 
-    [TestCase(null)]
-    public async Task Should_ReturnNull_When_NullCommand(AddFeelingCommand addFeelingCommand)
+    [Test]
+    public async Task Should_ReturnNull_When_NullFeeling()
     {
         // Arrange
-        InitializeDbSet(new List<FeelingEntity>());
+        AddFeelingCommand addFeelingCommand = new() { FeelingEntity = null! };
 
         // Act
         FeelingEntity feeling = await _addFeelingCommandHandler.Handle(addFeelingCommand);
+
+        // Assert
+        _dbSetMock.Object.Should().BeEmpty();
+        feeling.Should().BeNull();
+    }
+
+    [TestCase(-1)]
+    [TestCase(61)]
+    public async Task Should_ReturnNull_When_NonZeroId(int id)
+    {
+        // Arrange
+        AddFeelingCommand addFeelingCommand = new()
+        {
+            FeelingEntity = new FeelingEntity
+            {
+                ID = id,
+                Title = "d",
+                Description = "s",
+            },
+        };
+
+        // Act
+        FeelingEntity feeling = await _addFeelingCommandHandler.Handle(addFeelingCommand);
+
+        // Assert
+        _dbSetMock.Object.Should().BeEmpty();
+        feeling.Should().BeNull();
+    }
+
+    [Test]
+    public async Task Should_ReturnNull_When_NullCommand()
+    {
+        // Act
+        FeelingEntity feeling = await _addFeelingCommandHandler.Handle(null!);
 
         // Assert
         _dbSetMock.Object.Should().BeEmpty();

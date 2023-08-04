@@ -117,24 +117,44 @@ internal class DbEntitiesTestCases
     {
         new()
         {
-            ID = -1,
-            Title = Sad,
+            ID = 0,
+            Title = "",
             Description = Sad,
             PersonalEvents = new List<PersonalEventEntity>(),
         },
         new()
         {
-            ID = 2,
-            Title = null,
-            Description = Happy,
+            ID = 0,
+            Title = " ",
+            Description = Sad,
             PersonalEvents = new List<PersonalEventEntity>(),
         },
         new()
         {
-            ID = 2,
+            ID = 0,
             Title = null,
             Description = Happy,
-            PersonalEvents = null,
+            PersonalEvents = new List<PersonalEventEntity>(),
+        },new()
+        {
+            ID = 0,
+            Title = Sad,
+            Description = "",
+            PersonalEvents = new List<PersonalEventEntity>(),
+        },
+        new()
+        {
+            ID = 0,
+            Title = Sad,
+            Description = " ",
+            PersonalEvents = new List<PersonalEventEntity>(),
+        },
+        new()
+        {
+            ID = 0,
+            Title = Happy,
+            Description = null,
+            PersonalEvents = new List<PersonalEventEntity>(),
         },
         null,
     };
