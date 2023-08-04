@@ -31,6 +31,17 @@ internal class DbEntitiesTestCases
             Description = Happy,
             PersonalEvents = new List<PersonalEventEntity>(),
         },
+        new()
+        {
+            ID = 3,
+            Title = Happy,
+            Description = Happy,
+            PersonalEvents = new List<PersonalEventEntity> {new()
+            {
+                ID = 1, 
+                Title = MovedToBerlin,
+            }},
+        },
     };
 
     internal static readonly IList<MottoEntity> Mottos = new List<MottoEntity>
@@ -156,6 +167,5 @@ internal class DbEntitiesTestCases
             Description = null,
             PersonalEvents = new List<PersonalEventEntity>(),
         },
-        null,
     };
 }
