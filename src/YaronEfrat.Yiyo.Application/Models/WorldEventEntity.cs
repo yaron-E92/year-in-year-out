@@ -11,4 +11,9 @@ public class WorldEventEntity : IDbEntity
     public ICollection<SourceEntity> Sources { get; set; }
 
     public string Title { get; set; }
+
+    public override string ToString()
+    {
+        return $"WorldEventEntity(ID={ID},Title={Title} with {Sources?.Count ?? 0} sources)";
+    }
 }

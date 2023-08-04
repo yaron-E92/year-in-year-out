@@ -14,4 +14,9 @@ public class FeelingEntity : IDbEntity
     public string Description { get; set; }
 
     public virtual ICollection<PersonalEventEntity> PersonalEvents { get; set; }
+
+    public override string ToString()
+    {
+        return $"FeelingEntity(ID={ID},Title={Title} with {PersonalEvents?.Count ?? 0} personal events)";
+    }
 }

@@ -9,4 +9,9 @@ public class PersonalEventEntity : IDbEntity
     public int ID { get; set; }
 
     public string Title { get; set; }
+
+    public override string ToString()
+    {
+        return $"PersonalEventEntity(ID={ID},Title={Title})";
+    }
 }

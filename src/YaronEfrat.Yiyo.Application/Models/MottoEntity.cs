@@ -9,4 +9,9 @@ public class MottoEntity : IDbEntity
     public int ID { get; set; }
 
     public string Content { get; set; }
+
+    public override string ToString()
+    {
+        return $"MottoEntity(ID={ID},Content={Content})";
+    }
 }
