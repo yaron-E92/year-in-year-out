@@ -6,6 +6,12 @@ public class Motto: Entity
 
     public override void Validate()
     {
-        throw new NotImplementedException();
+        base.Validate();
+
+        if (string.IsNullOrWhiteSpace(Content))
+        {
+            throw new EntityException("Content is invalid (must be non empty/whitespace)", GetType());
+        }
+        Content = Content.Trim();
     }
 }

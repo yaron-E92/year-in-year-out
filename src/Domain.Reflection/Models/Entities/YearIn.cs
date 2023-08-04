@@ -7,6 +7,12 @@ public class YearIn : Part
     public override void Validate()
     {
         base.Validate();
-        throw new NotImplementedException();
+
+        WorldEvents ??= new List<WorldEvent>();
+
+        foreach (WorldEvent worldEvent in WorldEvents)
+        {
+            worldEvent.Validate();
+        }
     }
 }

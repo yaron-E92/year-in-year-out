@@ -9,7 +9,7 @@ public class SourceEntity : IDbEntity
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int ID { get; set; }
 
-    public Uri Url { get; set; }
+    public string Url { get; set; }
 
     public override string ToString()
     {

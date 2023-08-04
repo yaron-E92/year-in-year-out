@@ -11,7 +11,8 @@ using YaronEfrat.Yiyo.Application.Interfaces;
 using YaronEfrat.Yiyo.Application.Mappers.Feelings;
 using YaronEfrat.Yiyo.Application.Mappers.PersonalEvents;
 using YaronEfrat.Yiyo.Application.Models;
-using YaronEfrat.Yiyo.Domain.Reflection.Models.Exceptions;
+using YaronEfrat.Yiyo.Domain.Reflection.Models;
+using YaronEfrat.Yiyo.Domain.Reflection.Models.Entities;
 
 namespace YaronEfrat.Yiyo.Application.UnitTests.Commands.Feelings;
 
@@ -89,7 +90,7 @@ internal class AddFeelingCommandHandlerTests
         Func<Task> handleCommandAction = async () => await _addFeelingCommandHandler.Handle(addFeelingCommand);
 
         // Assert
-        await handleCommandAction.Should().ThrowAsync<FeelingException>();
+        await handleCommandAction.Should().ThrowAsync<EntityException>().WithMessage($"*{nameof(Feeling)}*");
         _dbSetMock.Object.Should().BeEmpty();
     }
 

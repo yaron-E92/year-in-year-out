@@ -1,6 +1,4 @@
-﻿using YaronEfrat.Yiyo.Domain.Reflection.Models.Exceptions;
-
-namespace YaronEfrat.Yiyo.Domain.Reflection.Models.Entities;
+﻿namespace YaronEfrat.Yiyo.Domain.Reflection.Models.Entities;
 
 public class Feeling : Entity
 {
@@ -19,13 +17,13 @@ public class Feeling : Entity
 
         if (string.IsNullOrWhiteSpace(Title))
         {
-            throw new FeelingException("Title is invalid (must be non empty/whitespace)");
+            throw new EntityException("Title is invalid (must be non empty/whitespace)", GetType());
         }
         Title = Title.Trim();
 
         if (string.IsNullOrWhiteSpace(Description))
         {
-            throw new FeelingException("Description is invalid (must be non empty/whitespace)");
+            throw new EntityException("Description is invalid (must be non empty/whitespace)", GetType());
         }
         Description = Description.Trim();
 

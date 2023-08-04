@@ -12,8 +12,8 @@ internal class DbEntitiesTestCases
     public const string Corona = "Corona";
     public const string War = "War";
 
-    public static readonly Uri Source1 = new("http://source1.net");
-    public static readonly Uri Source2 = new("http://source2.net");
+    public static readonly string Source1 = "http://source1.net";
+    public static readonly string Source2 = "http://source2.net";
 
     internal static readonly IList<FeelingEntity> Feelings = new List<FeelingEntity>
     {

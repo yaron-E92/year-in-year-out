@@ -7,6 +7,11 @@ public abstract class ReflectionEvent : Entity
     public override void Validate()
     {
         base.Validate();
+
+        if (string.IsNullOrWhiteSpace(Title))
+        {
+            throw new EntityException("Title is invalid (must be non empty/whitespace)", GetType());
+        }
         Title = Title.Trim();
     }
 }

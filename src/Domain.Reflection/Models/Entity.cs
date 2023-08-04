@@ -1,6 +1,4 @@
-﻿using YaronEfrat.Yiyo.Domain.Reflection.Models.Exceptions;
-
-namespace YaronEfrat.Yiyo.Domain.Reflection.Models;
+﻿namespace YaronEfrat.Yiyo.Domain.Reflection.Models;
 
 public abstract class Entity
 {
