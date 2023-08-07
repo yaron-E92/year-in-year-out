@@ -1,5 +1,9 @@
 ﻿namespace YaronEfrat.Yiyo.Domain.Reflection.Models.Entities;
 
+/// <summary>
+/// A world event that has happened
+/// during the passing <see cref="YearIn"/>
+/// </summary>
 public class WorldEvent : ReflectionEvent
 {
     public IList<Source> Sources { get; set; }

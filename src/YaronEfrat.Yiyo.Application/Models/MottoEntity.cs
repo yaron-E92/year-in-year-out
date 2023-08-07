@@ -1,8 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using YaronEfrat.Yiyo.Application.Interfaces;
+using YaronEfrat.Yiyo.Domain.Reflection.Models.Entities;
 
 namespace YaronEfrat.Yiyo.Application.Models;
 
+/// <summary>
+/// A database oriented representation of <see cref="Motto"/>
+/// </summary>
 public class MottoEntity : IDbEntity
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

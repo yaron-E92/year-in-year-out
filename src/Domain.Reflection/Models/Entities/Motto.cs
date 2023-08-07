@@ -1,5 +1,9 @@
 ﻿namespace YaronEfrat.Yiyo.Domain.Reflection.Models.Entities;
 
+/// <summary>
+/// A Motto or saying associated with the passing <see cref="YearIn"/>
+/// or desired for the coming <see cref="YearOut"/>
+/// </summary>
 public class Motto: Entity
 {
     public string Content { get; set; }
