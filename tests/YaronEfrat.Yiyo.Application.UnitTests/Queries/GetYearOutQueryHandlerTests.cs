@@ -31,7 +31,7 @@ internal class GetYearOutQueryHandlerTests
 
     [TestCase(1)]
     [TestCase(2)]
-    public async Task Should_ReturnCorrectFeeling_When_SearchingForExistingId(int id)
+    public async Task Should_ReturnCorrectYearOut_When_SearchingForExistingId(int id)
     {
         // Act
         YearOutEntity yearOut = await _getYearOutQueryHandler.Handle(new GetYearOutQuery {Id = id});

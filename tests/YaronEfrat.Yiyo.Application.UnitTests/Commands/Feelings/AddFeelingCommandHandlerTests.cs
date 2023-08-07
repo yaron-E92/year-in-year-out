@@ -47,17 +47,22 @@ internal class AddFeelingCommandHandlerTests
     {
         // Arrange
         int originalId = feelingEntity.ID; // For mocking the db generating id
-        feelingEntity.ID = 0; // Indicate non existing
-        AddFeelingCommand addFeelingCommand = new() { FeelingEntity = feelingEntity };
+        AddFeelingCommand addFeelingCommand = new() { FeelingEntity = new FeelingEntity
+        {
+            ID = 0, // Indicate non existing
+            Title = feelingEntity.Title,
+            Description = feelingEntity.Description,
+            PersonalEvents = feelingEntity.PersonalEvents,
+        } };
         _dbContextMock.Setup(cm => cm.SaveChangesAsync(default)).Callback(() =>
-            _dbContextMock.Object.Feelings.Single(f => f.Title.Equals(feelingEntity.Title)).ID = originalId); // Mocking id generation
+            _dbContextMock.Object.Feelings.Single(f => f.Title.Equals(feelingEntity.Title.Trim())).ID = originalId); // Mocking id generation
 
         // Act
         FeelingEntity feeling = await _addFeelingCommandHandler.Handle(addFeelingCommand);
 
         // Assert
-        _dbSetMock.Object.Should().Contain(f => f.Equals(feelingEntity));
-        _dbSetMock.Verify(dsm => dsm.AddAsync(feelingEntity, default), Times.Once);
+        _dbSetMock.Object.Should().Contain(f => f.Equals(feeling));
+        _dbSetMock.Verify(dsm => dsm.AddAsync(feeling, default), Times.Once);
         _dbContextMock.Verify(cm => cm.SaveChangesAsync(default), Times.Once);
         feeling.ID.Should().BeGreaterThan(0);
         feeling.Title.Should().Be(feelingEntity.Title.Trim());

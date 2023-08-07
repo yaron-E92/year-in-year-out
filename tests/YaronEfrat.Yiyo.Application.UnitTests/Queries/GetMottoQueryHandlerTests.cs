@@ -31,7 +31,7 @@ internal class GetMottoQueryHandlerTests
 
     [TestCase(1)]
     [TestCase(2)]
-    public async Task Should_ReturnCorrectFeeling_When_SearchingForExistingId(int id)
+    public async Task Should_ReturnCorrectMotto_When_SearchingForExistingId(int id)
     {
         // Act
         MottoEntity motto = await _getMottoQueryHandler.Handle(new GetMottoQuery {Id = id});

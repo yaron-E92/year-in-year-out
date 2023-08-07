@@ -31,7 +31,7 @@ internal class GetYearInQueryHandlerTests
 
     [TestCase(1)]
     [TestCase(2)]
-    public async Task Should_ReturnCorrectFeeling_When_SearchingForExistingId(int id)
+    public async Task Should_ReturnCorrectYearIn_When_SearchingForExistingId(int id)
     {
         // Act
         YearInEntity yearIn = await _getYearInQueryHandler.Handle(new GetYearInQuery {Id = id});

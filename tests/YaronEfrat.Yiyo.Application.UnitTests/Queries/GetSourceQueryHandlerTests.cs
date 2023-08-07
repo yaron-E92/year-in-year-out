@@ -31,7 +31,7 @@ internal class GetSourceQueryHandlerTests
 
     [TestCase(1)]
     [TestCase(2)]
-    public async Task Should_ReturnCorrectFeeling_When_SearchingForExistingId(int id)
+    public async Task Should_ReturnCorrectSource_When_SearchingForExistingId(int id)
     {
         // Act
         SourceEntity source = await _getSourceQueryHandler.Handle(new GetSourceQuery {Id = id});
