@@ -4,12 +4,12 @@ namespace YaronEfrat.Yiyo.Application.UnitTests;
 internal class DbEntitiesTestCases
 {
     public const string Sad = "Sad";
-    public const string Happy = "Happy";
-    public const string IAmAMotto = "I am a motto";
+    public const string Happy = "Happy ";
+    public const string IAmAMotto = "I am a motto ";
     public const string InspirationalQuote = "Inspirational quote";
-    public const string MovedToBerlin = "Moved to Berlin";
+    public const string MovedToBerlin = "Moved to Berlin ";
     public const string SawTheMoon = "Saw the moon";
-    public const string Corona = "Corona";
+    public const string Corona = "Corona ";
     public const string War = "War";
 
     public static readonly string Source1 = "http://source1.net";
