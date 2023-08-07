@@ -86,7 +86,6 @@ internal class AddMottoCommandHandlerTests
     public async Task Should_ThrowMottoException_When_NonValidMotto(string invalidMottoContent)
     {
         // Arrange
-
         MottoEntity mottoEntity = new()
         {
             Content = invalidMottoContent,
