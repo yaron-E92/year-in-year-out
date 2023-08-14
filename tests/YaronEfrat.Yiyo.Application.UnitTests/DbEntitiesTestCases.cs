@@ -11,6 +11,7 @@ internal class DbEntitiesTestCases
     public const string SawTheMoon = "Saw the moon";
     public const string Corona = "Corona ";
     public const string War = "War";
+    public const string NewUrl = "https://new.net";
 
     public static readonly string Source1 = "http://source1.net";
     public static readonly string Source2 = "http://source2.net";
@@ -92,11 +93,20 @@ internal class DbEntitiesTestCases
         {
             ID = 1,
             Title = Corona,
+            Sources = new List<SourceEntity>
+            {
+                new()
+                {
+                    ID = Sources[1].ID,
+                    Url = NewUrl,
+                },
+            },
         },
         new()
         {
             ID = 2,
             Title = War,
+            Sources = Sources,
         },
     };
 
