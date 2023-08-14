@@ -18,6 +18,10 @@ public class WorldEventDbEntityToDomainEntityMapper : IDbEntityToDomainEntityMap
 
     private static IList<Source> MapSources(IEnumerable<SourceEntity> dbSources)
     {
-        return dbSources.Select(dbSource => new Source(dbSource.Url)).ToList();
+        return dbSources != null! ?
+            dbSources.Where(s => s != null! && s.Url != null!)
+            .Select(dbSource => new Source(dbSource.Url))
+            .ToList()
+            : new List<Source>();
     }
 }

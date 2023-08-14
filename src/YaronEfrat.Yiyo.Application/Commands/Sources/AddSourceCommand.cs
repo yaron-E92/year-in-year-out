@@ -13,9 +13,11 @@ public class AddSourceCommand : IRequest<SourceEntity>
 public class AddSourceCommandHandler : IRequestHandler<AddSourceCommand, SourceEntity>
 {
     private readonly IApplicationDbContext _context;
+    private readonly bool _isChildCommand;
 
-    public AddSourceCommandHandler(IApplicationDbContext context)
+    public AddSourceCommandHandler(IApplicationDbContext context, bool isChildCommand = false)
     {
+        _isChildCommand = isChildCommand;
         _context = context;
     }
 
@@ -33,7 +35,11 @@ public class AddSourceCommandHandler : IRequestHandler<AddSourceCommand, SourceE
         }
 
         await _context.Sources.AddAsync(sourceEntity, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
+        if (!_isChildCommand)
+        {
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        
         return sourceEntity;
     }
 }

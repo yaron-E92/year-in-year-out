@@ -13,9 +13,11 @@ public class UpdateSourceCommand : IRequest<SourceEntity>
 public class UpdateSourceCommandHandler : IRequestHandler<UpdateSourceCommand, SourceEntity>
 {
     private readonly IApplicationDbContext _context;
+    private readonly bool _isChildCommand;
 
-    public UpdateSourceCommandHandler(IApplicationDbContext context)
+    public UpdateSourceCommandHandler(IApplicationDbContext context, bool isChildCommand = false)
     {
+        _isChildCommand = isChildCommand;
         _context = context;
     }
 
@@ -33,13 +35,17 @@ public class UpdateSourceCommandHandler : IRequestHandler<UpdateSourceCommand, S
         }
 
         SourceEntity existingSourceEntity = _context.Sources.SingleOrDefault(s => s.ID == sourceEntity.ID, null!);
-        if (existingSourceEntity == null)
+        if (existingSourceEntity == null!)
         {
             return null!;
         }
 
         existingSourceEntity.Url = sourceEntity.Url;
-        await _context.SaveChangesAsync(cancellationToken);
+        if (!_isChildCommand)
+        {
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
         return existingSourceEntity;
     }
 }
