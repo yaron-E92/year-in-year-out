@@ -11,10 +11,10 @@ internal class DbEntitiesTestCases
     public const string SawTheMoon = "Saw the moon";
     public const string Corona = "Corona ";
     public const string War = "War";
+    public const string Source1 = "http://source1.net";
+    public const string Source2 = "http://source2.net";
     public const string NewUrl = "https://new.net";
 
-    public static readonly string Source1 = "http://source1.net";
-    public static readonly string Source2 = "http://source2.net";
 
     internal static readonly IList<FeelingEntity> Feelings = new List<FeelingEntity>
     {
@@ -95,6 +95,7 @@ internal class DbEntitiesTestCases
             Title = Corona,
             Sources = new List<SourceEntity>
             {
+                Sources[0],
                 new()
                 {
                     ID = Sources[1].ID,
@@ -107,6 +108,21 @@ internal class DbEntitiesTestCases
             ID = 2,
             Title = War,
             Sources = Sources,
+        },
+        new()
+        {
+            ID = 3,
+            Title = Corona,
+            Sources = new List<SourceEntity>
+            {
+                Sources[0],
+                Sources[1],
+                new()
+                {
+                    ID = 0,
+                    Url = NewUrl,
+                },
+            },
         },
     };
 
@@ -153,7 +169,7 @@ internal class DbEntitiesTestCases
         new()
         {
             ID = 0,
-            Title = null,
+            Title = null!,
             Description = Happy,
             PersonalEvents = new List<PersonalEventEntity>(),
         },new()
@@ -174,7 +190,7 @@ internal class DbEntitiesTestCases
         {
             ID = 0,
             Title = Happy,
-            Description = null,
+            Description = null!,
             PersonalEvents = new List<PersonalEventEntity>(),
         },
     };
