@@ -143,10 +143,16 @@ internal class DbEntitiesTestCases
         new()
         {
             ID = 1,
+            Feelings = new List<FeelingEntity>(),
+            Motto = Mottos[0],
+            PersonalEvents = new List<PersonalEventEntity>(),
         },
         new()
         {
             ID = 2,
+            Feelings = Feelings,
+            Motto = Mottos[1],
+            PersonalEvents = PersonalEvents,
         },
     };
 
