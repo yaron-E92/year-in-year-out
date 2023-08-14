@@ -17,7 +17,7 @@ public class FeelingEntity : IDbEntity
 
     public string Description { get; set; }
 
-    public virtual ICollection<PersonalEventEntity> PersonalEvents { get; set; }
+    public virtual IList<PersonalEventEntity> PersonalEvents { get; set; }
 
     public override string ToString()
     {

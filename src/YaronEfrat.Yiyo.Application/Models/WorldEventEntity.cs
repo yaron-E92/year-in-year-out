@@ -12,7 +12,7 @@ public class WorldEventEntity : IDbEntity
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int ID { get; set; }
 
-    public ICollection<SourceEntity> Sources { get; set; }
+    public IList<SourceEntity> Sources { get; set; }
 
     public string Title { get; set; }
 

@@ -58,7 +58,15 @@ internal class AddWorldEventCommandHandlerTests
             Sources = worldEventEntity.Sources,
         } };
         _dbContextMock.Setup(cm => cm.SaveChangesAsync(default)).Callback(() =>
-            _dbContextMock.Object.WorldEvents.Single(f => f.Title.Equals(worldEventEntity.Title.Trim())).ID = originalId); // Mocking id generation
+        {
+            _dbContextMock.Object.WorldEvents.Single(we => we.Title.Equals(worldEventEntity.Title.Trim())).ID =
+                originalId;
+            SourceEntity sourceEntity = _dbContextMock.Object.Sources.SingleOrDefault(s => s.ID == 0);
+            if (sourceEntity != null)
+            {
+                sourceEntity.ID = 3; // To avoid an invalid source in other tests
+            }
+        }); // Mocking id generation
 
         // Act
         WorldEventEntity worldEvent = await _addWorldEventCommandHandler.Handle(addWorldEventCommand);

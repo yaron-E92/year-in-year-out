@@ -14,13 +14,13 @@ public class YearInEntity : IDbEntity
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int ID { get; set; }
 
-    public ICollection<FeelingEntity> Feelings { get; set; }
+    public IList<FeelingEntity> Feelings { get; set; }
 
     public MottoEntity Motto { get; set; }
 
-    public ICollection<PersonalEventEntity> PersonalEvents { get; set; }
+    public IList<PersonalEventEntity> PersonalEvents { get; set; }
 
-    public ICollection<WorldEventEntity> WorldEvents { get; set; }
+    public IList<WorldEventEntity> WorldEvents { get; set; }
 
     public override string ToString()
     {
