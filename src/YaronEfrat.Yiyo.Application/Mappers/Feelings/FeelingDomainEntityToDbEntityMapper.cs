@@ -17,5 +17,6 @@ public class FeelingDomainEntityToDbEntityMapper : IDomainEntityToDbEntityMapper
     {
         existingDbEntity.Title = domainEntity.Title;
         existingDbEntity.Description = domainEntity.Description;
+        _personalEventMapper.MapMany(domainEntity.PersonalEvents, existingDbEntity.PersonalEvents);
     }
 }
