@@ -34,6 +34,8 @@ jobs:
       uses: gittools/actions/gitversion/execute@v0
       with:
         additionalArguments: '/updateprojectfiles'
+        useConfigFile: true
+        configFilePath: '.github/GitVersion.yaml'
 
   buildAndTest:
     needs: [gitVersion]
