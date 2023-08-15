@@ -50,4 +50,4 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal /p:AssemblyVersion=${{ needs.gitVersion.outputs.assemblySemFileVer }} /p:FileVersion=${{ needs.gitVersion.outputs.assemblySemFileVer }} /p:InformationalVersion=${{ needs.gitVersion.outputs.informationalVersion }}
