@@ -53,3 +53,17 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal /p:AssemblyVersion=${{ needs.gitVersion.outputs.assemblySemFileVer }} /p:FileVersion=${{ needs.gitVersion.outputs.assemblySemFileVer }} /p:InformationalVersion=${{ needs.gitVersion.outputs.informationalVersion }}
+
+  tagAndRelease:
+    needs: [gitVersion, buildAndTest]
+    runs-on: ubuntu-latest
+    
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Tag on main
+      run: |
+          git config --global user.name "Github actions: gitversion"
+          git config --global user.email "gitversion@github-actions.com"
+          git tag -a "${{ needs.gitVersion.outputs.semVer}}" -m "Version ${{ needs.gitVersion.outputs.semVer}}"
+          git push --tags
