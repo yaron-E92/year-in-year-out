@@ -57,6 +57,7 @@ jobs:
   tagAndRelease:
     needs: [gitVersion, buildAndTest]
     runs-on: ubuntu-latest
+    if: contains(needs.gitVersion.outputs.branchName, 'main')
     permissions:
       contents: write
     
