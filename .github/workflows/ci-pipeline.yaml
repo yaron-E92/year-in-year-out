@@ -57,6 +57,8 @@ jobs:
   tagAndRelease:
     needs: [gitVersion, buildAndTest]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     
 
     steps:
