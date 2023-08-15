@@ -12,6 +12,13 @@ on:
 jobs:
   gitVersion:
     runs-on: ubuntu-latest
+    outputs:
+      branchName: ${{ steps.gitversion.outputs.branchName }} # To use an output in another job, you have to map it to a job output.
+      semVer: ${{ steps.gitversion.outputs.semVer }}
+      sha: ${{ steps.gitversion.outputs.sha }}
+      nugetVersion: ${{ steps.gitversion.outputs.nuGetVersion }}
+      assemblySemFileVer: ${{ steps.gitversion.outputs.assemblySemFileVer }}
+      informationalVersion: ${{ steps.gitversion.outputs.informationalVersion }}
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -25,23 +32,6 @@ jobs:
     - name: Determine Version
       id:   gitversion # id to later be referenced
       uses: gittools/actions/gitversion/execute@v0
-    - name: Display GitVersion outputs (step output)
-      run: |
-        echo "Major: ${{ steps.gitversion.outputs.major }}"
-        echo "Minor: ${{ steps.gitversion.outputs.minor }}"
-        echo "Patch: ${{ steps.gitversion.outputs.patch }}"
-        echo "PreReleaseTag: ${{ steps.gitversion.outputs.preReleaseTag }}"
-        echo "FullBuildMetaData: ${{ steps.gitversion.outputs.fullBuildMetaData }}"
-        echo "MajorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}"
-        echo "SemVer: ${{ steps.gitversion.outputs.semVer }}"
-        echo "AssemblySemFileVer: ${{ steps.gitversion.outputs.assemblySemFileVer }}"
-        echo "FullSemVer: ${{ steps.gitversion.outputs.fullSemVer }}"
-        echo "InformationalVersion: ${{ steps.gitversion.outputs.informationalVersion }}"
-        echo "BranchName: ${{ steps.gitversion.outputs.branchName }}"
-        echo "Sha: ${{ steps.gitversion.outputs.sha }}"
-        echo "NuGetVersion: ${{ steps.gitversion.outputs.nuGetVersion }}"
-        echo "CommitsSinceVersionSource: ${{ steps.gitversion.outputs.commitsSinceVersionSource }}"
-        echo "CommitDate: ${{ steps.gitversion.outputs.commitDate }}"
 
   buildAndTest:
     needs: [gitVersion]
