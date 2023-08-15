@@ -17,7 +17,8 @@ public class AddYearOutCommandHandler : IRequestHandler<AddYearOutCommand, YearO
     private readonly IDbEntityToDomainEntityMapper<YearOutEntity, YearOut> _dbToDomainMapper;
     private readonly IDomainEntityToDbEntityMapper<YearOut, YearOutEntity> _domainToDbMapper;
 
-    public AddYearOutCommandHandler(IApplicationDbContext context, IDbEntityToDomainEntityMapper<YearOutEntity, YearOut> dbToDomainMapper,
+    public AddYearOutCommandHandler(IApplicationDbContext context,
+        IDbEntityToDomainEntityMapper<YearOutEntity, YearOut> dbToDomainMapper,
         IDomainEntityToDbEntityMapper<YearOut, YearOutEntity> domainToDbMapper)
     {
         _context = context;
