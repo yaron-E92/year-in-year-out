@@ -10,8 +10,35 @@ on:
     branches: [ "main" ]
 
 jobs:
-  buildAndTest:
+  gitVersion:
+    runs-on: ubuntu-latest
+    outputs:
+      branchName: ${{ steps.gitversion.outputs.branchName }} # To use an output in another job, you have to map it to a job output.
+      semVer: ${{ steps.gitversion.outputs.semVer }}
+      sha: ${{ steps.gitversion.outputs.sha }}
+      nugetVersion: ${{ steps.gitversion.outputs.nuGetVersion }}
+      assemblySemFileVer: ${{ steps.gitversion.outputs.assemblySemFileVer }}
+      informationalVersion: ${{ steps.gitversion.outputs.informationalVersion }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0
+      with:
+        versionSpec: '5.x'
+        preferLatestVersion: true
+    - name: Determine Version
+      id:   gitversion # id to later be referenced
+      uses: gittools/actions/gitversion/execute@v0
+      with:
+        additionalArguments: '/updateprojectfiles'
+        useConfigFile: true
+        configFilePath: '.github/GitVersion.yaml'
 
+  buildAndTest:
+    needs: [gitVersion]
     runs-on: ubuntu-latest
 
     steps:
@@ -25,4 +52,21 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal /p:AssemblyVersion=${{ needs.gitVersion.outputs.assemblySemFileVer }} /p:FileVersion=${{ needs.gitVersion.outputs.assemblySemFileVer }} /p:InformationalVersion=${{ needs.gitVersion.outputs.informationalVersion }}
+
+  tagAndRelease:
+    needs: [gitVersion, buildAndTest]
+    runs-on: ubuntu-latest
+    if: contains(needs.gitVersion.outputs.branchName, 'main')
+    permissions:
+      contents: write
+    
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Tag on main
+      run: |
+          git config --global user.name "Github actions: gitversion"
+          git config --global user.email "gitversion@github-actions.com"
+          git tag -a "${{ needs.gitVersion.outputs.semVer}}" -m "Version ${{ needs.gitVersion.outputs.semVer}}"
+          git push --tags
