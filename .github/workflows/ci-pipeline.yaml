@@ -10,8 +10,40 @@ on:
     branches: [ "main" ]
 
 jobs:
-  buildAndTest:
+  gitVersion:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0
+      with:
+        versionSpec: '6.x'
+        preferLatestVersion: true
+    - name: Determine Version
+      uses: gittools/actions/gitversion/execute@v0
+    - name: Display GitVersion outputs (step output)
+      run: |
+        echo "Major: ${{ steps.gitversion.outputs.major }}"
+        echo "Minor: ${{ steps.gitversion.outputs.minor }}"
+        echo "Patch: ${{ steps.gitversion.outputs.patch }}"
+        echo "PreReleaseTag: ${{ steps.gitversion.outputs.preReleaseTag }}"
+        echo "FullBuildMetaData: ${{ steps.gitversion.outputs.fullBuildMetaData }}"
+        echo "MajorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}"
+        echo "SemVer: ${{ steps.gitversion.outputs.semVer }}"
+        echo "AssemblySemFileVer: ${{ steps.gitversion.outputs.assemblySemFileVer }}"
+        echo "FullSemVer: ${{ steps.gitversion.outputs.fullSemVer }}"
+        echo "InformationalVersion: ${{ steps.gitversion.outputs.informationalVersion }}"
+        echo "BranchName: ${{ steps.gitversion.outputs.branchName }}"
+        echo "Sha: ${{ steps.gitversion.outputs.sha }}"
+        echo "NuGetVersion: ${{ steps.gitversion.outputs.nuGetVersion }}"
+        echo "CommitsSinceVersionSource: ${{ steps.gitversion.outputs.commitsSinceVersionSource }}"
+        echo "CommitDate: ${{ steps.gitversion.outputs.commitDate }}"
 
+  buildAndTest:
+    needs: [gitVersion]
     runs-on: ubuntu-latest
 
     steps:
