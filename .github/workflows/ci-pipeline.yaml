@@ -23,6 +23,7 @@ jobs:
         versionSpec: '5.x'
         preferLatestVersion: true
     - name: Determine Version
+      id:   gitversion # id to later be referenced
       uses: gittools/actions/gitversion/execute@v0
     - name: Display GitVersion outputs (step output)
       run: |
