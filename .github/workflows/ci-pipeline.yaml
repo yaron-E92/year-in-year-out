@@ -56,15 +56,15 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal /p:AssemblyVersion=${{ needs.gitVersion.outputs.assemblySemFileVer }} /p:FileVersion=${{ needs.gitVersion.outputs.assemblySemFileVer }} /p:InformationalVersion=${{ needs.gitVersion.outputs.informationalVersion }}
+      run: dotnet test --logger "trx" --no-build --verbosity normal /p:AssemblyVersion=${{ needs.gitVersion.outputs.assemblySemFileVer }} /p:FileVersion=${{ needs.gitVersion.outputs.assemblySemFileVer }} /p:InformationalVersion=${{ needs.gitVersion.outputs.informationalVersion }}
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v2
       if: always()
       with:
         files: |
-          test-results/**/*.xml
-          test-results/**/*.trx
-          test-results/**/*.json
+          tests/**/TestResults/*.xml
+          tests/**/TestResults/*.trx
+          tests/**/TestResults/*.json
 
   tagAndRelease:
     needs: [gitVersion, buildAndTest]
