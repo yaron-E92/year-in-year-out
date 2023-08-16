@@ -23,4 +23,12 @@ public abstract class Entity
         // https://learn.microsoft.com/archive/blogs/ericlippert/guidelines-and-rules-for-gethashcode
         return _requestedHashCode.Value;
     }
+
+    public virtual void Validate()
+    {
+        if (Id < 0)
+        {
+            throw new EntityException("Id must be non negative");
+        }
+    }
 }

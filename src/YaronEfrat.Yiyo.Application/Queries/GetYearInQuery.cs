@@ -1,5 +1,7 @@
 ﻿using MediatR;
 
+using Microsoft.EntityFrameworkCore;
+
 using YaronEfrat.Yiyo.Application.Interfaces;
 using YaronEfrat.Yiyo.Application.Models;
 
@@ -21,6 +23,7 @@ public class GetYearInQueryHandler : IRequestHandler<GetYearInQuery, YearInEntit
 
     public async Task<YearInEntity> Handle(GetYearInQuery request, CancellationToken cancellationToken = default)
     {
-        return _context.YearIns.SingleOrDefault(yearIn => yearIn.ID.Equals(request.Id))!;
+        return (await _context.YearIns.SingleOrDefaultAsync(yearIn => yearIn.ID.Equals(request.Id),
+            cancellationToken))!;
     }
 }
