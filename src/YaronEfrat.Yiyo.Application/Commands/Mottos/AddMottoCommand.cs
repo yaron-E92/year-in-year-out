@@ -29,17 +29,12 @@ public class AddMottoCommandHandler : IRequestHandler<AddMottoCommand, MottoEnti
 
     public async Task<MottoEntity> Handle(AddMottoCommand request, CancellationToken cancellationToken = default)
     {
-        if (request == null!)
+        if (!request.IsValidAddCommand())
         {
             return null!;
         }
 
         MottoEntity mottoEntity = request.MottoEntity;
-        if (mottoEntity is not { ID: 0 })
-        {
-            return null!;
-        }
-
         Motto domainMotto = _dbToDomainMapper.Map(mottoEntity);
         domainMotto.Validate();
 

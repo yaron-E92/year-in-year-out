@@ -33,17 +33,12 @@ public class AddWorldEventCommandHandler : IRequestHandler<AddWorldEventCommand,
 
     public async Task<WorldEventEntity> Handle(AddWorldEventCommand request, CancellationToken cancellationToken = default)
     {
-        if (request == null!)
+        if (!request.IsValidAddCommand())
         {
             return null!;
         }
 
         WorldEventEntity worldEventEntity = request.WorldEventEntity;
-        if (worldEventEntity is not { ID: 0 })
-        {
-            return null!;
-        }
-
         WorldEvent domainWorldEvent = _dbToDomainMapper.Map(worldEventEntity);
         domainWorldEvent.Validate();
 

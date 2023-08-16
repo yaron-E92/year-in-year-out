@@ -23,17 +23,12 @@ public class AddSourceCommandHandler : IRequestHandler<AddSourceCommand, SourceE
 
     public async Task<SourceEntity> Handle(AddSourceCommand request, CancellationToken cancellationToken = default)
     {
-        if (request == null!)
+        if (!request.IsValidAddCommand())
         {
             return null!;
         }
 
         SourceEntity sourceEntity = request.SourceEntity;
-        if (sourceEntity is not { ID: 0 })
-        {
-            return null!;
-        }
-
         await _context.Sources.AddAsync(sourceEntity, cancellationToken);
         if (!_isChildCommand)
         {

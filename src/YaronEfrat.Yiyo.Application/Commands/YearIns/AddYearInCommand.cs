@@ -1,7 +1,6 @@
 ﻿using MediatR;
 
 using YaronEfrat.Yiyo.Application.Interfaces;
-using YaronEfrat.Yiyo.Application.Mappers.YearIns;
 using YaronEfrat.Yiyo.Application.Models;
 using YaronEfrat.Yiyo.Domain.Reflection.Models.Entities;
 
@@ -29,17 +28,12 @@ public class AddYearInCommandHandler : IRequestHandler<AddYearInCommand, YearInE
 
     public async Task<YearInEntity> Handle(AddYearInCommand request, CancellationToken cancellationToken = default)
     {
-        if (request == null!)
+        if (!request.IsValidAddCommand())
         {
             return null!;
         }
 
         YearInEntity yearInEntity = request.YearInEntity;
-        if (yearInEntity is not { ID: 0 })
-        {
-            return null!;
-        }
-
         YearIn yearIn = _dbToDomainMapper.Map(yearInEntity);
         yearIn.Validate();
 

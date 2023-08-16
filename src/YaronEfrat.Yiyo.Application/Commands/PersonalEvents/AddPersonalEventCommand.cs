@@ -30,17 +30,12 @@ public class AddPersonalEventCommandHandler : IRequestHandler<AddPersonalEventCo
     public async Task<PersonalEventEntity> Handle(AddPersonalEventCommand request,
         CancellationToken cancellationToken = default)
     {
-        if (request == null!)
+        if (!request.IsValidAddCommand())
         {
             return null!;
         }
 
         PersonalEventEntity personalEventEntity = request.PersonalEventEntity;
-        if (personalEventEntity is not { ID: 0 })
-        {
-            return null!;
-        }
-
         PersonalEvent domainPersonalEvent = _dbToDomainMapper.Map(personalEventEntity);
         domainPersonalEvent.Validate();
 

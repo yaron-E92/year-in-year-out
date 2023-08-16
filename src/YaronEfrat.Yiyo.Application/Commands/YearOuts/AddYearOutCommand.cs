@@ -28,17 +28,12 @@ public class AddYearOutCommandHandler : IRequestHandler<AddYearOutCommand, YearO
 
     public async Task<YearOutEntity> Handle(AddYearOutCommand request, CancellationToken cancellationToken = default)
     {
-        if (request == null!)
+        if (!request.IsValidAddCommand())
         {
             return null!;
         }
 
         YearOutEntity yearOutEntity = request.YearOutEntity;
-        if (yearOutEntity is not { ID: 0 })
-        {
-            return null!;
-        }
-
         YearOut yearOut = _dbToDomainMapper.Map(yearOutEntity);
         yearOut.Validate();
 

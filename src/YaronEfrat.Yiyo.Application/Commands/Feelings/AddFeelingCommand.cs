@@ -28,17 +28,12 @@ public class AddFeelingCommandHandler : IRequestHandler<AddFeelingCommand, Feeli
 
     public async Task<FeelingEntity> Handle(AddFeelingCommand request, CancellationToken cancellationToken = default)
     {
-        if (request == null!)
+        if (!request.IsValidAddCommand())
         {
             return null!;
         }
 
         FeelingEntity feelingEntity = request.FeelingEntity;
-        if (feelingEntity is not {ID: 0})
-        {
-            return null!;
-        }
-
         Feeling domainFeeling = _dbToDomainMapper.Map(feelingEntity);
         domainFeeling.Validate();
 
