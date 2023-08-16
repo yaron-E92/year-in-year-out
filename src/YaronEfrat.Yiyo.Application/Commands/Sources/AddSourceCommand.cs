@@ -8,16 +8,16 @@ namespace YaronEfrat.Yiyo.Application.Commands.Sources;
 public class AddSourceCommand : IRequest<SourceEntity>
 {
     public SourceEntity SourceEntity { get; set; } = default!;
+
+    public bool IsChildCommand { get; init; } = false;
 }
 
 public class AddSourceCommandHandler : IRequestHandler<AddSourceCommand, SourceEntity>
 {
     private readonly IApplicationDbContext _context;
-    private readonly bool _isChildCommand;
 
-    public AddSourceCommandHandler(IApplicationDbContext context, bool isChildCommand = false)
+    public AddSourceCommandHandler(IApplicationDbContext context)
     {
-        _isChildCommand = isChildCommand;
         _context = context;
     }
 
@@ -30,7 +30,7 @@ public class AddSourceCommandHandler : IRequestHandler<AddSourceCommand, SourceE
 
         SourceEntity sourceEntity = request.SourceEntity;
         await _context.Sources.AddAsync(sourceEntity, cancellationToken);
-        if (!_isChildCommand)
+        if (!request.IsChildCommand)
         {
             await _context.SaveChangesAsync(cancellationToken);
         }

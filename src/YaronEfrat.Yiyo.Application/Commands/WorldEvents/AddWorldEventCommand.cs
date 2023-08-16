@@ -17,18 +17,17 @@ public class AddWorldEventCommandHandler : IRequestHandler<AddWorldEventCommand,
     private readonly IApplicationDbContext _context;
     private readonly IDbEntityToDomainEntityMapper<WorldEventEntity, WorldEvent> _dbToDomainMapper;
     private readonly IDomainEntityToDbEntityMapper<WorldEvent, WorldEventEntity> _domainToDbMapper;
-    private readonly AddSourceCommandHandler _addSourceCommandHandler;
-    private readonly UpdateSourceCommandHandler _updateSourceCommandHandler;
+    private readonly IMediator _mediator;
 
     public AddWorldEventCommandHandler(IApplicationDbContext context,
         IDbEntityToDomainEntityMapper<WorldEventEntity, WorldEvent> dbToDomainMapper,
-        IDomainEntityToDbEntityMapper<WorldEvent, WorldEventEntity> domainToDbMapper)
+        IDomainEntityToDbEntityMapper<WorldEvent, WorldEventEntity> domainToDbMapper,
+        IMediator mediator)
     {
         _context = context;
         _dbToDomainMapper = dbToDomainMapper;
         _domainToDbMapper = domainToDbMapper;
-        _addSourceCommandHandler = new AddSourceCommandHandler(context, true);
-        _updateSourceCommandHandler = new UpdateSourceCommandHandler(context, true);
+        _mediator = mediator;
     }
 
     public async Task<WorldEventEntity> Handle(AddWorldEventCommand request, CancellationToken cancellationToken = default)
@@ -43,28 +42,38 @@ public class AddWorldEventCommandHandler : IRequestHandler<AddWorldEventCommand,
         domainWorldEvent.Validate();
 
         _domainToDbMapper.Map(domainWorldEvent, worldEventEntity);
-        await HandleSources(worldEventEntity.Sources);
+        await HandleSources(worldEventEntity.Sources, cancellationToken);
         await _context.WorldEvents.AddAsync(worldEventEntity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         return worldEventEntity;
     }
 
-    private async Task HandleSources(IEnumerable<SourceEntity> sources)
+    private async Task HandleSources(IEnumerable<SourceEntity> sources, CancellationToken cancellationToken)
     {
         IList<Task<SourceEntity>> tasks = sources.Select(sourceEntity => sourceEntity.ID == 0
-                ? AddSource(sourceEntity)
-                : UpdateSource(sourceEntity))
+                ? AddSource(sourceEntity, cancellationToken)
+                : UpdateSource(sourceEntity, cancellationToken))
             .ToList();
         await Task.WhenAll(tasks);
     }
 
-    private Task<SourceEntity> AddSource(SourceEntity sourceEntity)
+    private Task<SourceEntity> AddSource(SourceEntity sourceEntity, CancellationToken cancellationToken)
     {
-        return _addSourceCommandHandler.Handle(new AddSourceCommand {SourceEntity = sourceEntity});
+        return _mediator.Send(new AddSourceCommand
+            {
+                SourceEntity = sourceEntity,
+                IsChildCommand = true,
+            },
+            cancellationToken);
     }
 
-    private Task<SourceEntity> UpdateSource(SourceEntity sourceEntity)
+    private Task<SourceEntity> UpdateSource(SourceEntity sourceEntity, CancellationToken cancellationToken)
     {
-        return _updateSourceCommandHandler.Handle(new UpdateSourceCommand {SourceEntity = sourceEntity});
+        return _mediator.Send(new UpdateSourceCommand
+            {
+                SourceEntity = sourceEntity,
+                IsChildCommand = true,
+            },
+            cancellationToken);
     }
 }

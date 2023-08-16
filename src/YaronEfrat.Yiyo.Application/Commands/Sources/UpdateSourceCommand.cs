@@ -8,16 +8,16 @@ namespace YaronEfrat.Yiyo.Application.Commands.Sources;
 public class UpdateSourceCommand : IRequest<SourceEntity>
 {
     public SourceEntity SourceEntity { get; set; } = default!;
+
+    public bool IsChildCommand { get; init; } = false;
 }
 
 public class UpdateSourceCommandHandler : IRequestHandler<UpdateSourceCommand, SourceEntity>
 {
     private readonly IApplicationDbContext _context;
-    private readonly bool _isChildCommand;
 
-    public UpdateSourceCommandHandler(IApplicationDbContext context, bool isChildCommand = false)
+    public UpdateSourceCommandHandler(IApplicationDbContext context)
     {
-        _isChildCommand = isChildCommand;
         _context = context;
     }
 
@@ -41,7 +41,7 @@ public class UpdateSourceCommandHandler : IRequestHandler<UpdateSourceCommand, S
         }
 
         existingSourceEntity.Url = sourceEntity.Url;
-        if (!_isChildCommand)
+        if (!request.IsChildCommand)
         {
             await _context.SaveChangesAsync(cancellationToken);
         }

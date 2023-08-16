@@ -1,11 +1,14 @@
 ﻿using FluentAssertions;
 
+using MediatR;
+
 using Microsoft.EntityFrameworkCore;
 
 using Moq;
 
 using NUnit.Framework;
 
+using YaronEfrat.Yiyo.Application.Commands.Sources;
 using YaronEfrat.Yiyo.Application.Commands.WorldEvents;
 using YaronEfrat.Yiyo.Application.Interfaces;
 using YaronEfrat.Yiyo.Application.Mappers.WorldEvents;
@@ -22,6 +25,10 @@ internal class AddWorldEventCommandHandlerTests
     private AddWorldEventCommandHandler _addWorldEventCommandHandler;
     private Mock<DbSet<WorldEventEntity>> _dbSetMock;
     private Mock<DbSet<SourceEntity>> _sourcesMock;
+    private Mock<IMediator> _mediatorMock;
+
+    private AddSourceCommandHandler _addSourceCommandHandler;
+    private UpdateSourceCommandHandler _updateSourceCommandHandler;
 
     [SetUp]
     public void SetUp()
@@ -34,9 +41,21 @@ internal class AddWorldEventCommandHandlerTests
         _dbContextMock.Setup(mock => mock.Sources)
             .Returns(_sourcesMock.Object);
 
+        _addSourceCommandHandler = new AddSourceCommandHandler(_dbContextMock.Object);
+        _updateSourceCommandHandler = new UpdateSourceCommandHandler(_dbContextMock.Object);
+
+        _mediatorMock = new Mock<IMediator>();
+        _mediatorMock.Setup(m => m.Send(It.IsAny<AddSourceCommand>(), default))
+            .Returns(async (AddSourceCommand c, CancellationToken token) =>
+                await _addSourceCommandHandler.Handle(c, token));
+        _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateSourceCommand>(), default))
+            .Returns(async (UpdateSourceCommand c, CancellationToken token) =>
+                await _updateSourceCommandHandler.Handle(c, token));
+
         _addWorldEventCommandHandler = new AddWorldEventCommandHandler(_dbContextMock.Object,
             new WorldEventDbEntityToDomainEntityMapper(),
-            new WorldEventDomainEntityToDbEntityMapper());
+            new WorldEventDomainEntityToDbEntityMapper(),
+            _mediatorMock.Object);
     }
 
     private void InitializeDbSet(IList<WorldEventEntity> worldEventEntities)
