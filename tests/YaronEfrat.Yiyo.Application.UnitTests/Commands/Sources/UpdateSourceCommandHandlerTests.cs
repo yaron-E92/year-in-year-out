@@ -46,7 +46,7 @@ internal class UpdateSourceCommandHandlerTests
             Url = DbEntitiesTestCases.NewUrl,
         } };
         _dbContextMock.Setup(cm => cm.SaveChangesAsync(default)).Callback(() =>
-            _dbContextMock.Object.Sources.Single(m => m.ID.Equals(sourceEntity.ID)).Url = DbEntitiesTestCases.NewUrl); // Mocking id generation
+            _dbContextMock.Object.Sources.Single(m => m.ID.Equals(sourceEntity.ID)).Url = DbEntitiesTestCases.NewUrl);
 
         // Act
         SourceEntity source = await _updateSourceCommandHandler.Handle(updateSourceCommand);
