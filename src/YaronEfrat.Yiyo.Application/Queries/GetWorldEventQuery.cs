@@ -11,7 +11,7 @@ public class GetWorldEventQuery : IRequest<WorldEventEntity>
 {
     public int Id { get; init; }
 
-    public string Title { get; init; }
+    public string? Title { get; init; }
 }
 
 public class GetWorldEventQueryHandler : IRequestHandler<GetWorldEventQuery, WorldEventEntity>
@@ -32,7 +32,7 @@ public class GetWorldEventQueryHandler : IRequestHandler<GetWorldEventQuery, Wor
         }
 
         return (!string.IsNullOrWhiteSpace(request.Title)
-            ? await _context.WorldEvents.SingleOrDefaultAsync(we => we.Title.Equals(request.Title), cancellationToken)
+            ? await _context.WorldEvents.SingleOrDefaultAsync(we => we.Title!.Equals(request.Title), cancellationToken)
             : null)!;
     }
 }

@@ -25,7 +25,10 @@ public class YearInDomainEntityToDbEntityMapper : IDomainEntityToDbEntityMapper<
     public void Map(YearIn domainEntity, YearInEntity existingDbEntity)
     {
         _feelingMapper.MapMany(domainEntity.Feelings, existingDbEntity.Feelings);
-        _mottoMapper.Map(domainEntity.Motto, existingDbEntity.Motto);
+        if (existingDbEntity.Motto != null)
+        {
+            _mottoMapper.Map(domainEntity.Motto!, existingDbEntity.Motto);
+        }
         _personalEventMapper.MapMany(domainEntity.PersonalEvents, existingDbEntity.PersonalEvents);
         _worldEventMapper.MapMany(domainEntity.WorldEvents, existingDbEntity.WorldEvents);
     }

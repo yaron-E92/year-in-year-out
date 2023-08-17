@@ -11,7 +11,7 @@ public class GetPersonalEventQuery : IRequest<PersonalEventEntity>
 {
     public int Id { get; init; }
 
-    public string Title { get; init; }
+    public string? Title { get; init; }
 }
 
 public class GetPersonalEventQueryHandler : IRequestHandler<GetPersonalEventQuery, PersonalEventEntity>
@@ -32,7 +32,7 @@ public class GetPersonalEventQueryHandler : IRequestHandler<GetPersonalEventQuer
         }
 
         return (!string.IsNullOrWhiteSpace(request.Title)
-            ? await _context.PersonalEvents.SingleOrDefaultAsync(pe => pe.Title.Equals(request.Title),
+            ? await _context.PersonalEvents.SingleOrDefaultAsync(pe => pe.Title!.Equals(request.Title),
                 cancellationToken)
             : null)!;
     }

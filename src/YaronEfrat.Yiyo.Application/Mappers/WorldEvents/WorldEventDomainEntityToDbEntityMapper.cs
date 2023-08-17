@@ -8,6 +8,6 @@ public class WorldEventDomainEntityToDbEntityMapper : IDomainEntityToDbEntityMap
 {
     public void Map(WorldEvent domainEntity, WorldEventEntity existingDbEntity)
     {
-        existingDbEntity.Title = domainEntity.Title;
+        existingDbEntity.Title = domainEntity.Title!;
     }
 }

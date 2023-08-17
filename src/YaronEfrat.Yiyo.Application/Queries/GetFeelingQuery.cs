@@ -11,7 +11,7 @@ public class GetFeelingQuery : IRequest<FeelingEntity>
 {
     public int Id { get; init; }
 
-    public string Title { get; init; }
+    public string? Title { get; init; }
 }
 
 public class GetFeelingQueryHandler : IRequestHandler<GetFeelingQuery, FeelingEntity>
@@ -32,7 +32,7 @@ public class GetFeelingQueryHandler : IRequestHandler<GetFeelingQuery, FeelingEn
         }
 
         return (!string.IsNullOrWhiteSpace(request.Title)
-            ? await _context.Feelings.SingleOrDefaultAsync(feel => feel.Title.Equals(request.Title), cancellationToken)
+            ? await _context.Feelings.SingleOrDefaultAsync(feel => feel.Title!.Equals(request.Title), cancellationToken)
             : null)!;
     }
 }

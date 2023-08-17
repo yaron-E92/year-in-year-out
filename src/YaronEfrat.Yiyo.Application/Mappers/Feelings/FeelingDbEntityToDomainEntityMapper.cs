@@ -19,7 +19,7 @@ public class FeelingDbEntityToDomainEntityMapper : IDbEntityToDomainEntityMapper
         {
             Title = dbEntity.Title,
             Description = dbEntity.Description,
-            PersonalEvents = dbEntity.PersonalEvents?.Select(_personalEventMapper.Map).ToList()!,
+            PersonalEvents = dbEntity.PersonalEvents.Select(_personalEventMapper.Map).ToList(),
         };
     }
 }
