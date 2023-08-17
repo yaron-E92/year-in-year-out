@@ -20,7 +20,7 @@ public class WorldEventDbEntityToDomainEntityMapper : IDbEntityToDomainEntityMap
     {
         return dbSources != null! ?
             dbSources.Where(s => s != null! && s.Url != null!)
-            .Select(dbSource => new Source(dbSource.Url))
+            .Select(dbSource => new Source(dbSource.Url ?? string.Empty))
             .ToList()
             : new List<Source>();
     }

@@ -26,10 +26,10 @@ public class YearInDbEntityToDomainEntityMapper : IDbEntityToDomainEntityMapper<
     {
         return new YearIn
         {
-            Feelings = dbEntity.Feelings?.Select(_feelingMapper.Map).ToList()!,
-            Motto = _mottoMapper.Map(dbEntity.Motto),
-            PersonalEvents = dbEntity.PersonalEvents?.Select(_personalEventMapper.Map).ToList()!,
-            WorldEvents = dbEntity.WorldEvents?.Select(_worldEventMapper.Map).ToList()!,
+            Feelings = dbEntity.Feelings.Select(_feelingMapper.Map).ToList(),
+            Motto = dbEntity.Motto != null ? _mottoMapper.Map(dbEntity.Motto) : null,
+            PersonalEvents = dbEntity.PersonalEvents.Select(_personalEventMapper.Map).ToList(),
+            WorldEvents = dbEntity.WorldEvents.Select(_worldEventMapper.Map).ToList(),
         };
     }
 }

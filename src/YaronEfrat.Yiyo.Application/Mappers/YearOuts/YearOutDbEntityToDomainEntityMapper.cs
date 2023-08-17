@@ -23,9 +23,9 @@ public class YearOutDbEntityToDomainEntityMapper : IDbEntityToDomainEntityMapper
     {
         return new YearOut
         {
-            Feelings = dbEntity.Feelings?.Select(_feelingMapper.Map).ToList()!,
-            Motto = _mottoMapper.Map(dbEntity.Motto),
-            PersonalEvents = dbEntity.PersonalEvents?.Select(_personalEventMapper.Map).ToList()!,
+            Feelings = dbEntity.Feelings.Select(_feelingMapper.Map).ToList(),
+            Motto = dbEntity.Motto != null ? _mottoMapper.Map(dbEntity.Motto) : null,
+            PersonalEvents = dbEntity.PersonalEvents.Select(_personalEventMapper.Map).ToList(),
         };
     }
 }
