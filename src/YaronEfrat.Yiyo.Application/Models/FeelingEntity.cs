@@ -13,11 +13,11 @@ public class FeelingEntity : IDbEntity
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int ID { get; set; }
 
-    public string Title { get; set; }
+    public string? Title { get; set; }
 
-    public string Description { get; set; }
+    public string? Description { get; set; }
 
-    public virtual IList<PersonalEventEntity> PersonalEvents { get; set; }
+    public IList<PersonalEventEntity> PersonalEvents { get; set; } = new List<PersonalEventEntity>();
 
     public override string ToString()
     {

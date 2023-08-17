@@ -8,6 +8,6 @@ public class MottoDomainEntityToDbEntityMapper : IDomainEntityToDbEntityMapper<M
 {
     public void Map(Motto domainEntity, MottoEntity existingDbEntity)
     {
-        existingDbEntity.Content = domainEntity.Content;
+        existingDbEntity.Content = domainEntity.Content!;
     }
 }

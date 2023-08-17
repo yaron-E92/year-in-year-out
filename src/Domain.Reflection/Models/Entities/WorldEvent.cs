@@ -6,7 +6,7 @@
 /// </summary>
 public class WorldEvent : ReflectionEvent
 {
-    public IList<Source> Sources { get; set; }
+    public IList<Source> Sources { get; set; } = new List<Source>();
 
     public override void Validate()
     {

@@ -6,7 +6,7 @@
 /// </summary>
 public class YearIn : Part
 {
-    public IList<WorldEvent> WorldEvents { get; set; }
+    public IList<WorldEvent> WorldEvents { get; set; } = new List<WorldEvent>();
 
     public override void Validate()
     {

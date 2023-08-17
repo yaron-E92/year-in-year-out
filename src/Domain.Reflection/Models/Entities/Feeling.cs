@@ -7,14 +7,14 @@
 /// </summary>
 public class Feeling : Entity
 {
-    public string Title { get; set; }
+    public string? Title { get; set; }
 
-    public string Description { get; set; }
+    public string? Description { get; set; }
 
     /// <summary>
     /// A list of all personal events referenced by this <see cref="Feeling"/>
     /// </summary>
-    public IList<PersonalEvent> PersonalEvents { get; set; }
+    public IList<PersonalEvent> PersonalEvents { get; set; } = new List<PersonalEvent>();
 
     public override void Validate()
     {

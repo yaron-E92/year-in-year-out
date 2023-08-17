@@ -12,9 +12,9 @@ public class WorldEventEntity : IDbEntity
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int ID { get; set; }
 
-    public IList<SourceEntity> Sources { get; set; }
+    public IList<SourceEntity> Sources { get; set; } = new List<SourceEntity>();
 
-    public string Title { get; set; }
+    public string? Title { get; set; }
 
     public override string ToString()
     {
