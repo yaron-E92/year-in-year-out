@@ -24,6 +24,7 @@ public class MottoController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
+    [Produces("application/json")]
     public async Task<ActionResult<MottoEntity>> Get([FromRoute]int id)
     {
         try

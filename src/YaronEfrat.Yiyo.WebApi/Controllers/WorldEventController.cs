@@ -24,6 +24,7 @@ public class WorldEventController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
+    [Produces("application/json")]
     public async Task<ActionResult<WorldEventEntity>> Get([FromRoute]int id)
     {
         try

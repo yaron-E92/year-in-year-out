@@ -24,6 +24,7 @@ public class YearInController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
+    [Produces("application/json")]
     public async Task<ActionResult<YearInEntity>> Get([FromRoute]int id)
     {
         try

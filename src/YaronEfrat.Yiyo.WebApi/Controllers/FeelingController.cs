@@ -24,6 +24,7 @@ public class FeelingController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
+    [Produces("application/json")]
     public async Task<ActionResult<FeelingEntity>> Get([FromRoute]int id)
     {
         try

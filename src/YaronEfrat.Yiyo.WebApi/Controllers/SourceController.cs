@@ -24,6 +24,7 @@ public class SourceController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
+    [Produces("application/json")]
     public async Task<ActionResult<SourceEntity>> Get([FromRoute]int id)
     {
         try

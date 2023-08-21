@@ -24,6 +24,7 @@ public class PersonalEventController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
+    [Produces("application/json")]
     public async Task<ActionResult<PersonalEventEntity>> Get([FromRoute]int id)
     {
         try
