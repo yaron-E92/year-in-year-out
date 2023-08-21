@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +18,18 @@ public static class PersistenceLayerDependencyInjection
             options.UseNpgsql(configuration.GetConnectionString(DefaultConnection)));
 
         services.AddScoped<IApplicationDbContext>(provider =>
-            provider.GetService<ApplicationDbContext>() ?? throw new Exception("Could not get DB context."));
+            {
+                var context = provider.GetService<ApplicationDbContext>() ??
+                              throw new Exception("Could not get DB context.");
+                context.Database.EnsureCreated();
+                RelationalDatabaseCreator databaseCreator =
+                    (RelationalDatabaseCreator) context.Database.GetService<IDatabaseCreator>();
+                if (!databaseCreator.HasTables())
+                {
+                    databaseCreator.CreateTables();
+                }
+                return context;
+            }
+            );
     }
 }

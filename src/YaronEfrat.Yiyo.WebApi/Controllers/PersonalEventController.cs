@@ -12,12 +12,12 @@ namespace YaronEfrat.Yiyo.WebApi.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
-public class YearInController : ControllerBase
+public class PersonalEventController : ControllerBase
 {
     private readonly IMediator _mediator;
-    private readonly ILogger<YearInController> _logger;
+    private readonly ILogger<PersonalEventController> _logger;
 
-    public YearInController(IMediator mediator, ILogger<YearInController> logger)
+    public PersonalEventController(IMediator mediator, ILogger<PersonalEventController> logger)
     {
         _mediator = mediator;
         _logger = logger;
@@ -25,12 +25,12 @@ public class YearInController : ControllerBase
 
     [HttpGet("{id:int}")]
     [Produces("application/json")]
-    public async Task<ActionResult<YearInEntity>> Get([FromRoute]int id)
+    public async Task<ActionResult<PersonalEventEntity>> Get([FromRoute]int id)
     {
         try
         {
-            YearInEntity yearInEntity = await _mediator.Send(new GetYearInQuery {Id = id});
-            return yearInEntity != null! ? Ok(yearInEntity) : NotFound();
+            PersonalEventEntity personalEventEntity = await _mediator.Send(new GetPersonalEventQuery {Id = id});
+            return personalEventEntity != null! ? Ok(personalEventEntity) : NotFound();
         }
         catch (EntityException e)
         {

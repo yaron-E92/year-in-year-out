@@ -1,8 +1,10 @@
 ﻿using MediatR;
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Web.Resource;
+
+using YaronEfrat.Yiyo.Application.Models;
+using YaronEfrat.Yiyo.Application.Queries;
+using YaronEfrat.Yiyo.Domain.Reflection.Models;
 
 namespace YaronEfrat.Yiyo.WebApi.Controllers;
 
@@ -19,5 +21,21 @@ public class YearOutController : ControllerBase
     {
         _mediator = mediator;
         _logger = logger;
+    }
+
+    [HttpGet("{id:int}")]
+    [Produces("application/json")]
+    public async Task<ActionResult<YearOutEntity>> Get([FromRoute] int id)
+    {
+        try
+        {
+            YearOutEntity yearOutEntity = await _mediator.Send(new GetYearOutQuery { Id = id });
+            return yearOutEntity != null! ? Ok(yearOutEntity) : NotFound();
+        }
+        catch (EntityException e)
+        {
+            _logger.LogError(e.Message);
+            return BadRequest();
+        }
     }
 }
