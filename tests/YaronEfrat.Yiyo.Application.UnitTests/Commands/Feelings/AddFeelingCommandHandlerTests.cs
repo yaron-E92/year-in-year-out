@@ -11,6 +11,7 @@ using YaronEfrat.Yiyo.Application.Interfaces;
 using YaronEfrat.Yiyo.Application.Mappers.Feelings;
 using YaronEfrat.Yiyo.Application.Mappers.PersonalEvents;
 using YaronEfrat.Yiyo.Application.Models;
+using YaronEfrat.Yiyo.Application.Validators;
 using YaronEfrat.Yiyo.Domain.Reflection.Models;
 using YaronEfrat.Yiyo.Domain.Reflection.Models.Entities;
 
@@ -32,7 +33,8 @@ internal class AddFeelingCommandHandlerTests
 
         _addFeelingCommandHandler = new AddFeelingCommandHandler(_dbContextMock.Object,
             new FeelingDbEntityToDomainEntityMapper(new PersonalEventDbEntityToDomainEntityMapper()),
-            new FeelingDomainEntityToDbEntityMapper(new PersonalEventDomainEntityToDbEntityMapper()));
+            new FeelingDomainEntityToDbEntityMapper(new PersonalEventDomainEntityToDbEntityMapper()),
+            new CommandValidator<FeelingEntity>());
     }
 
     private void InitializeDbSet(IList<FeelingEntity> feelingEntities)
@@ -65,8 +67,8 @@ internal class AddFeelingCommandHandlerTests
         _dbSetMock.Verify(dsm => dsm.AddAsync(feeling, default), Times.Once);
         _dbContextMock.Verify(cm => cm.SaveChangesAsync(default), Times.Once);
         feeling.ID.Should().BeGreaterThan(0);
-        feeling.Title.Should().Be(feelingEntity.Title.Trim());
-        feeling.Description.Should().Be(feelingEntity.Description.Trim());
+        feeling.Title.Should().Be(feelingEntity.Title?.Trim());
+        feeling.Description.Should().Be(feelingEntity.Description?.Trim());
         feeling.PersonalEvents.Should().BeEquivalentTo(feelingEntity.PersonalEvents);
     }
 

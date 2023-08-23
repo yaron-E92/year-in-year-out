@@ -10,6 +10,7 @@ using YaronEfrat.Yiyo.Application.Commands.PersonalEvents;
 using YaronEfrat.Yiyo.Application.Interfaces;
 using YaronEfrat.Yiyo.Application.Mappers.PersonalEvents;
 using YaronEfrat.Yiyo.Application.Models;
+using YaronEfrat.Yiyo.Application.Validators;
 using YaronEfrat.Yiyo.Domain.Reflection.Models;
 using YaronEfrat.Yiyo.Domain.Reflection.Models.Entities;
 
@@ -31,7 +32,8 @@ internal class AddPersonalEventCommandHandlerTests
 
         _addPersonalEventCommandHandler = new AddPersonalEventCommandHandler(_dbContextMock.Object,
             new PersonalEventDbEntityToDomainEntityMapper(),
-            new PersonalEventDomainEntityToDbEntityMapper());
+            new PersonalEventDomainEntityToDbEntityMapper(),
+            new CommandValidator<PersonalEventEntity>());
     }
 
     private void InitializeDbSet(IList<PersonalEventEntity> personalEventEntities)
@@ -62,7 +64,7 @@ internal class AddPersonalEventCommandHandlerTests
         _dbSetMock.Verify(dsm => dsm.AddAsync(personalEvent, default), Times.Once);
         _dbContextMock.Verify(cm => cm.SaveChangesAsync(default), Times.Once);
         personalEvent.ID.Should().BeGreaterThan(0);
-        personalEvent.Title.Should().Be(personalEventEntity.Title.Trim());
+        personalEvent.Title.Should().Be(personalEventEntity.Title?.Trim());
     }
 
     [TestCaseSource(typeof(DbEntitiesTestCases), nameof(DbEntitiesTestCases.PersonalEvents))]

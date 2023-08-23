@@ -14,6 +14,7 @@ using YaronEfrat.Yiyo.Application.Mappers.PersonalEvents;
 using YaronEfrat.Yiyo.Application.Mappers.WorldEvents;
 using YaronEfrat.Yiyo.Application.Mappers.YearIns;
 using YaronEfrat.Yiyo.Application.Models;
+using YaronEfrat.Yiyo.Application.Validators;
 using YaronEfrat.Yiyo.Domain.Reflection.Models;
 using YaronEfrat.Yiyo.Domain.Reflection.Models.Entities;
 
@@ -46,7 +47,8 @@ internal class AddYearInCommandHandlerTests
             personalEventDomainToDbMapper,
             new WorldEventDomainEntityToDbEntityMapper());
         _addYearInCommandHandler = new AddYearInCommandHandler(_dbContextMock.Object,
-            dbToDomainMapper, domainToDbMapper);
+            dbToDomainMapper, domainToDbMapper,
+            new CommandValidator<YearInEntity>());
     }
 
     private void InitializeDbSet(IList<YearInEntity> yearInEntities)

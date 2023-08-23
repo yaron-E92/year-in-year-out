@@ -13,6 +13,7 @@ using YaronEfrat.Yiyo.Application.Mappers.Mottos;
 using YaronEfrat.Yiyo.Application.Mappers.PersonalEvents;
 using YaronEfrat.Yiyo.Application.Mappers.YearOuts;
 using YaronEfrat.Yiyo.Application.Models;
+using YaronEfrat.Yiyo.Application.Validators;
 using YaronEfrat.Yiyo.Domain.Reflection.Models;
 using YaronEfrat.Yiyo.Domain.Reflection.Models.Entities;
 
@@ -43,7 +44,8 @@ internal class AddYearOutCommandHandlerTests
             new MottoDomainEntityToDbEntityMapper(),
             personalEventDomainToDbMapper);
         _addYearOutCommandHandler = new AddYearOutCommandHandler(_dbContextMock.Object,
-            dbToDomainMapper, domainToDbMapper);
+            dbToDomainMapper, domainToDbMapper,
+            new CommandValidator<YearOutEntity>());
     }
 
     private void InitializeDbSet(IList<YearOutEntity> yearOutEntities)

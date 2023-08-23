@@ -9,6 +9,7 @@ using NUnit.Framework;
 using YaronEfrat.Yiyo.Application.Commands.Sources;
 using YaronEfrat.Yiyo.Application.Interfaces;
 using YaronEfrat.Yiyo.Application.Models;
+using YaronEfrat.Yiyo.Application.Validators;
 
 namespace YaronEfrat.Yiyo.Application.UnitTests.Commands.Sources;
 
@@ -26,7 +27,8 @@ internal class AddSourceCommandHandlerTests
 
         InitializeDbSet(new List<SourceEntity>());
 
-        _addSourceCommandHandler = new AddSourceCommandHandler(_dbContextMock.Object);
+        _addSourceCommandHandler = new AddSourceCommandHandler(_dbContextMock.Object,
+            new CommandValidator<SourceEntity>());
     }
 
     private void InitializeDbSet(IList<SourceEntity> sourceEntities)
