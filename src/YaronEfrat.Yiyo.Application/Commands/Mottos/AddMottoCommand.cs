@@ -2,6 +2,7 @@
 
 using YaronEfrat.Yiyo.Application.Interfaces;
 using YaronEfrat.Yiyo.Application.Models;
+using YaronEfrat.Yiyo.Application.Validators;
 using YaronEfrat.Yiyo.Domain.Reflection.Models.Entities;
 
 namespace YaronEfrat.Yiyo.Application.Commands.Mottos;
@@ -18,18 +19,22 @@ public class AddMottoCommandHandler : IRequestHandler<AddMottoCommand, MottoEnti
     private readonly IDbEntityToDomainEntityMapper<MottoEntity, Motto> _dbToDomainMapper;
     private readonly IDomainEntityToDbEntityMapper<Motto, MottoEntity> _domainToDbMapper;
 
+    private readonly ICommandValidator<MottoEntity> _commandValidator;
+
     public AddMottoCommandHandler(IApplicationDbContext context,
         IDbEntityToDomainEntityMapper<MottoEntity, Motto> dbToDomainMapper,
-        IDomainEntityToDbEntityMapper<Motto, MottoEntity> domainToDbMapper)
+        IDomainEntityToDbEntityMapper<Motto, MottoEntity> domainToDbMapper,
+        ICommandValidator<MottoEntity> commandValidator)
     {
         _context = context;
         _dbToDomainMapper = dbToDomainMapper;
         _domainToDbMapper = domainToDbMapper;
+        _commandValidator = commandValidator;
     }
 
     public async Task<MottoEntity> Handle(AddMottoCommand request, CancellationToken cancellationToken = default)
     {
-        if (!request.IsValidAddCommand())
+        if (!await _commandValidator.IsValidAddCommand(request))
         {
             return null!;
         }

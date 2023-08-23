@@ -3,6 +3,7 @@
 using YaronEfrat.Yiyo.Application.Commands.Sources;
 using YaronEfrat.Yiyo.Application.Interfaces;
 using YaronEfrat.Yiyo.Application.Models;
+using YaronEfrat.Yiyo.Application.Validators;
 using YaronEfrat.Yiyo.Domain.Reflection.Models.Entities;
 
 namespace YaronEfrat.Yiyo.Application.Commands.WorldEvents;
@@ -17,22 +18,26 @@ public class AddWorldEventCommandHandler : IRequestHandler<AddWorldEventCommand,
     private readonly IApplicationDbContext _context;
     private readonly IDbEntityToDomainEntityMapper<WorldEventEntity, WorldEvent> _dbToDomainMapper;
     private readonly IDomainEntityToDbEntityMapper<WorldEvent, WorldEventEntity> _domainToDbMapper;
+
+    private readonly ICommandValidator<WorldEventEntity> _commandValidator;
     private readonly IMediator _mediator;
 
     public AddWorldEventCommandHandler(IApplicationDbContext context,
         IDbEntityToDomainEntityMapper<WorldEventEntity, WorldEvent> dbToDomainMapper,
         IDomainEntityToDbEntityMapper<WorldEvent, WorldEventEntity> domainToDbMapper,
-        IMediator mediator)
+        IMediator mediator,
+        ICommandValidator<WorldEventEntity> commandValidator)
     {
         _context = context;
         _dbToDomainMapper = dbToDomainMapper;
         _domainToDbMapper = domainToDbMapper;
         _mediator = mediator;
+        _commandValidator = commandValidator;
     }
 
     public async Task<WorldEventEntity> Handle(AddWorldEventCommand request, CancellationToken cancellationToken = default)
     {
-        if (!request.IsValidAddCommand())
+        if (!await _commandValidator.IsValidAddCommand(request))
         {
             return null!;
         }
