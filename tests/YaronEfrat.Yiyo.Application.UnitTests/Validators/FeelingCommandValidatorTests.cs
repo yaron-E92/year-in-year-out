@@ -54,7 +54,7 @@ internal class FeelingCommandValidatorTests
                 ID = 0, // Indicate non existing
                 Title = feelingEntity.Title,
                 Description = feelingEntity.Description,
-                PersonalEvents = feelingEntity.PersonalEvents,
+                PersonalEvents = feelingEntity.PersonalEvents.Select(TestFixtures.Clone).ToList(),
             },
         };
 

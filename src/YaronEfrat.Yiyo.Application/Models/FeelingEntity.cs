@@ -23,4 +23,27 @@ public class FeelingEntity : IDbEntity
     {
         return $"FeelingEntity(ID={ID},Title={Title} with {PersonalEvents?.Count ?? 0} personal events)";
     }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || obj.GetType() != GetType())
+        {
+            return false;
+        }
+
+        if (ReferenceEquals(this, obj))
+        {
+            return true;
+        }
+
+        FeelingEntity other = (FeelingEntity) obj;
+
+        return ID == other.ID && Title!.Equals(other.Title)
+            && PersonalEvents.SequenceEqual(other.PersonalEvents);
+    }
+
+    public override int GetHashCode()
+    {
+        return ID;
+    }
 }

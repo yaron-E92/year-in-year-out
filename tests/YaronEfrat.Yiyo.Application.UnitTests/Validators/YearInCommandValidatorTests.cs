@@ -74,10 +74,10 @@ internal class YearInCommandValidatorTests
             YearInEntity = new YearInEntity
             {
                 ID = 0, // Indicate non existing
-                Feelings = yearInEntity.Feelings,
+                Feelings = yearInEntity.Feelings.Select(TestFixtures.Clone).ToList(),
                 Motto = yearInEntity.Motto,
-                PersonalEvents = yearInEntity.PersonalEvents,
-                WorldEvents = yearInEntity.WorldEvents,
+                PersonalEvents = yearInEntity.PersonalEvents.Select(TestFixtures.Clone).ToList(),
+                WorldEvents = yearInEntity.WorldEvents.Select(TestFixtures.Clone).ToList(),
             },
         };
 

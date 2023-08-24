@@ -66,9 +66,9 @@ internal class YearOutCommandValidatorTests
             YearOutEntity = new YearOutEntity
             {
                 ID = 0, // Indicate non existing
-                Feelings = yearOutEntity.Feelings,
+                Feelings = yearOutEntity.Feelings.Select(TestFixtures.Clone).ToList(),
                 Motto = yearOutEntity.Motto,
-                PersonalEvents = yearOutEntity.PersonalEvents,
+                PersonalEvents = yearOutEntity.PersonalEvents.Select(TestFixtures.Clone).ToList(),
             },
         };
 
