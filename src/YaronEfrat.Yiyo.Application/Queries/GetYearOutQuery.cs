@@ -23,7 +23,8 @@ public class GetYearOutQueryHandler : IRequestHandler<GetYearOutQuery, YearOutEn
 
     public async Task<YearOutEntity> Handle(GetYearOutQuery request, CancellationToken cancellationToken = default)
     {
-        return (await _context.YearOuts.SingleOrDefaultAsync(yearOut => yearOut.ID.Equals(request.Id),
+        return (await _context.YearOuts.AsNoTracking()
+            .SingleOrDefaultAsync(yearOut => yearOut.ID.Equals(request.Id),
             cancellationToken))!;
     }
 }

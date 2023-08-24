@@ -23,7 +23,8 @@ public class GetYearInQueryHandler : IRequestHandler<GetYearInQuery, YearInEntit
 
     public async Task<YearInEntity> Handle(GetYearInQuery request, CancellationToken cancellationToken = default)
     {
-        return (await _context.YearIns.SingleOrDefaultAsync(yearIn => yearIn.ID.Equals(request.Id),
+        return (await _context.YearIns.AsNoTracking()
+            .SingleOrDefaultAsync(yearIn => yearIn.ID.Equals(request.Id),
             cancellationToken))!;
     }
 }

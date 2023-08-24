@@ -27,12 +27,14 @@ public class GetWorldEventQueryHandler : IRequestHandler<GetWorldEventQuery, Wor
     {
         if (request.Id > 0)
         {
-            return (await _context.WorldEvents.SingleOrDefaultAsync(we => we.ID.Equals(request.Id),
+            return (await _context.WorldEvents.AsNoTracking()
+                .SingleOrDefaultAsync(we => we.ID.Equals(request.Id),
                 cancellationToken))!;
         }
 
         return (!string.IsNullOrWhiteSpace(request.Title)
-            ? await _context.WorldEvents.SingleOrDefaultAsync(we => we.Title!.Equals(request.Title), cancellationToken)
+            ? await _context.WorldEvents.AsNoTracking()
+                .SingleOrDefaultAsync(we => we.Title!.Equals(request.Title), cancellationToken)
             : null)!;
     }
 }

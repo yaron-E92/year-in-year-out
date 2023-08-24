@@ -27,12 +27,15 @@ public class GetFeelingQueryHandler : IRequestHandler<GetFeelingQuery, FeelingEn
     {
         if (request.Id > 0)
         {
-            return (await _context.Feelings.SingleOrDefaultAsync(
-                feel => feel.ID.Equals(request.Id), cancellationToken))!;
+            return (await _context.Feelings.AsNoTracking()
+                .SingleOrDefaultAsync(
+                    feel => feel.ID.Equals(request.Id), cancellationToken))!;
         }
 
         return (!string.IsNullOrWhiteSpace(request.Title)
-            ? await _context.Feelings.SingleOrDefaultAsync(feel => feel.Title!.Equals(request.Title), cancellationToken)
+            ? await _context.Feelings.AsNoTracking()
+                .SingleOrDefaultAsync(feel => feel.Title!.Equals(request.Title),
+                    cancellationToken)
             : null)!;
     }
 }
