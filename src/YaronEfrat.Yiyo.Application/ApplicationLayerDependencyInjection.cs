@@ -8,6 +8,7 @@ using YaronEfrat.Yiyo.Application.Mappers.WorldEvents;
 using YaronEfrat.Yiyo.Application.Mappers.YearIns;
 using YaronEfrat.Yiyo.Application.Mappers.YearOuts;
 using YaronEfrat.Yiyo.Application.Models;
+using YaronEfrat.Yiyo.Application.Validators;
 using YaronEfrat.Yiyo.Domain.Reflection.Models.Entities;
 
 namespace YaronEfrat.Yiyo.Application;
@@ -45,6 +46,15 @@ public static class ApplicationLayerDependencyInjection
                 YearInDomainEntityToDbEntityMapper>()
             .AddScoped<IDomainEntityToDbEntityMapper<YearOut, YearOutEntity>,
                 YearOutDomainEntityToDbEntityMapper>();
+
+        // Command validators
+        services.AddScoped<ICommandValidator<FeelingEntity>, FeelingCommandValidator>()
+            .AddScoped<ICommandValidator<MottoEntity>, CommandValidator<MottoEntity>>()
+            .AddScoped<ICommandValidator<PersonalEventEntity>, CommandValidator<PersonalEventEntity>>()
+            .AddScoped<ICommandValidator<SourceEntity>, CommandValidator<SourceEntity>>()
+            .AddScoped<ICommandValidator<WorldEventEntity>, CommandValidator<WorldEventEntity>>()
+            .AddScoped<ICommandValidator<YearInEntity>, YearInCommandValidator>()
+            .AddScoped<ICommandValidator<YearOutEntity>, YearOutCommandValidator>();
 
         // Mediatr
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ApplicationLayerDependencyInjection).Assembly));
