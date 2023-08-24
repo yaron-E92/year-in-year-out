@@ -18,4 +18,26 @@ public class PersonalEventEntity : IDbEntity
     {
         return $"PersonalEventEntity(ID={ID},Title={Title})";
     }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || obj.GetType() != GetType())
+        {
+            return false;
+        }
+
+        if (ReferenceEquals(this, obj))
+        {
+            return true;
+        }
+
+        PersonalEventEntity other = (PersonalEventEntity) obj;
+
+        return ID == other.ID && Title!.Equals(other.Title);
+    }
+
+    public override int GetHashCode()
+    {
+        return ID;
+    }
 }
