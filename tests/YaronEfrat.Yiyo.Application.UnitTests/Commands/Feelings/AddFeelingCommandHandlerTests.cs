@@ -34,7 +34,7 @@ internal class AddFeelingCommandHandlerTests
         _addFeelingCommandHandler = new AddFeelingCommandHandler(_dbContextMock.Object,
             new FeelingDbEntityToDomainEntityMapper(new PersonalEventDbEntityToDomainEntityMapper()),
             new FeelingDomainEntityToDbEntityMapper(new PersonalEventDomainEntityToDbEntityMapper()),
-            new CommandValidator<FeelingEntity>());
+            new CommandValidator<FeelingEntity>(null));
     }
 
     private void InitializeDbSet(IList<FeelingEntity> feelingEntities)

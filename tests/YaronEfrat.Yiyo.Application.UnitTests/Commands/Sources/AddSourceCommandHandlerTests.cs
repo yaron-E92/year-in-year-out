@@ -28,7 +28,7 @@ internal class AddSourceCommandHandlerTests
         InitializeDbSet(new List<SourceEntity>());
 
         _addSourceCommandHandler = new AddSourceCommandHandler(_dbContextMock.Object,
-            new CommandValidator<SourceEntity>());
+            new CommandValidator<SourceEntity>(null!));
     }
 
     private void InitializeDbSet(IList<SourceEntity> sourceEntities)

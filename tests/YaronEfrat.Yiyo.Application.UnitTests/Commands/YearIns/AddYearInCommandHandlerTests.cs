@@ -48,7 +48,7 @@ internal class AddYearInCommandHandlerTests
             new WorldEventDomainEntityToDbEntityMapper());
         _addYearInCommandHandler = new AddYearInCommandHandler(_dbContextMock.Object,
             dbToDomainMapper, domainToDbMapper,
-            new CommandValidator<YearInEntity>());
+            new CommandValidator<YearInEntity>(null!));
     }
 
     private void InitializeDbSet(IList<YearInEntity> yearInEntities)

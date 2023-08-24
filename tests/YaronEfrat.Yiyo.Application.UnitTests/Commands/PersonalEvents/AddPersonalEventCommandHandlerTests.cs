@@ -33,7 +33,7 @@ internal class AddPersonalEventCommandHandlerTests
         _addPersonalEventCommandHandler = new AddPersonalEventCommandHandler(_dbContextMock.Object,
             new PersonalEventDbEntityToDomainEntityMapper(),
             new PersonalEventDomainEntityToDbEntityMapper(),
-            new CommandValidator<PersonalEventEntity>());
+            new CommandValidator<PersonalEventEntity>(null!));
     }
 
     private void InitializeDbSet(IList<PersonalEventEntity> personalEventEntities)

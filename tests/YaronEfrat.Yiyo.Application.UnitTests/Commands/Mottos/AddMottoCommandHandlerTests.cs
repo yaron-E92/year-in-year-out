@@ -33,7 +33,7 @@ internal class AddMottoCommandHandlerTests
         _addMottoCommandHandler = new AddMottoCommandHandler(_dbContextMock.Object,
             new MottoDbEntityToDomainEntityMapper(),
             new MottoDomainEntityToDbEntityMapper(),
-            new CommandValidator<MottoEntity>());
+            new CommandValidator<MottoEntity>(null!));
     }
 
     private void InitializeDbSet(IList<MottoEntity> mottoEntities)

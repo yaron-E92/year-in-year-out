@@ -45,7 +45,7 @@ internal class AddYearOutCommandHandlerTests
             personalEventDomainToDbMapper);
         _addYearOutCommandHandler = new AddYearOutCommandHandler(_dbContextMock.Object,
             dbToDomainMapper, domainToDbMapper,
-            new CommandValidator<YearOutEntity>());
+            new CommandValidator<YearOutEntity>(null!));
     }
 
     private void InitializeDbSet(IList<YearOutEntity> yearOutEntities)
