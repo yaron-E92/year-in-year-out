@@ -15,4 +15,26 @@ public class SourceEntity : IDbEntity
     {
         return $"SourceEntity(ID={ID},Url={Url})";
     }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || obj.GetType() != GetType())
+        {
+            return false;
+        }
+
+        if (ReferenceEquals(this, obj))
+        {
+            return true;
+        }
+
+        SourceEntity other = (SourceEntity) obj;
+
+        return ID == other.ID && Url!.Equals(other.Url);
+    }
+
+    public override int GetHashCode()
+    {
+        return ID;
+    }
 }

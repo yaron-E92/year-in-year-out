@@ -2,6 +2,7 @@
 
 using YaronEfrat.Yiyo.Application.Interfaces;
 using YaronEfrat.Yiyo.Application.Models;
+using YaronEfrat.Yiyo.Application.Validators;
 using YaronEfrat.Yiyo.Domain.Reflection.Models.Entities;
 
 namespace YaronEfrat.Yiyo.Application.Commands.PersonalEvents;
@@ -18,11 +19,15 @@ public class AddPersonalEventCommandHandler : IRequestHandler<AddPersonalEventCo
     private readonly IDbEntityToDomainEntityMapper<PersonalEventEntity, PersonalEvent> _dbToDomainMapper;
     private readonly IDomainEntityToDbEntityMapper<PersonalEvent, PersonalEventEntity> _domainToDbMapper;
 
+    private readonly ICommandValidator<PersonalEventEntity> _commandValidator;
+
     public AddPersonalEventCommandHandler(IApplicationDbContext context,
         IDbEntityToDomainEntityMapper<PersonalEventEntity, PersonalEvent> dbToDomainMapper,
-        IDomainEntityToDbEntityMapper<PersonalEvent, PersonalEventEntity> domainToDbMapper)
+        IDomainEntityToDbEntityMapper<PersonalEvent, PersonalEventEntity> domainToDbMapper,
+        ICommandValidator<PersonalEventEntity> commandValidator)
     {
         _domainToDbMapper = domainToDbMapper;
+        _commandValidator = commandValidator;
         _dbToDomainMapper = dbToDomainMapper;
         _context = context;
     }
@@ -30,7 +35,7 @@ public class AddPersonalEventCommandHandler : IRequestHandler<AddPersonalEventCo
     public async Task<PersonalEventEntity> Handle(AddPersonalEventCommand request,
         CancellationToken cancellationToken = default)
     {
-        if (!request.IsValidAddCommand())
+        if (!await _commandValidator.IsValidAddCommand(request))
         {
             return null!;
         }

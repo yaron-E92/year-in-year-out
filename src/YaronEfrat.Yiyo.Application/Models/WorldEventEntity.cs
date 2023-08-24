@@ -20,4 +20,27 @@ public class WorldEventEntity : IDbEntity
     {
         return $"WorldEventEntity(ID={ID},Title={Title} with {Sources?.Count ?? 0} sources)";
     }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || obj.GetType() != GetType())
+        {
+            return false;
+        }
+
+        if (ReferenceEquals(this, obj))
+        {
+            return true;
+        }
+
+        WorldEventEntity other = (WorldEventEntity) obj;
+
+        return ID == other.ID && Title!.Equals(other.Title)
+            && Sources.SequenceEqual(other.Sources);
+    }
+
+    public override int GetHashCode()
+    {
+        return ID;
+    }
 }

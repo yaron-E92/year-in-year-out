@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using YaronEfrat.Yiyo.Application.Interfaces;
 using YaronEfrat.Yiyo.Application.Models;
 
-namespace YaronEfrat.Yiyo.Application.Queries;
+namespace YaronEfrat.Yiyo.Application.Queries.PersonalEvents;
 
 public class GetPersonalEventQuery : IRequest<PersonalEventEntity>
 {

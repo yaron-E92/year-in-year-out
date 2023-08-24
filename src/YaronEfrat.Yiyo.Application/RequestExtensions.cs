@@ -13,11 +13,4 @@ internal static class RequestExtensions
             .Single(info => info.PropertyType == typeof(T))
             .GetValue(request) as T;
     }
-
-    public static bool IsValidAddCommand<T>(this IRequest<T> request) where T : class, IDbEntity
-    {
-        return request != null! && request.GetRequestContent() is {ID: 0};
-    }
-
-
 }

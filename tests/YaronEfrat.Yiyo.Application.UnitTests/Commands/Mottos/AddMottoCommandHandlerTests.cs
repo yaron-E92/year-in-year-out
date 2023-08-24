@@ -10,6 +10,7 @@ using YaronEfrat.Yiyo.Application.Commands.Mottos;
 using YaronEfrat.Yiyo.Application.Interfaces;
 using YaronEfrat.Yiyo.Application.Mappers.Mottos;
 using YaronEfrat.Yiyo.Application.Models;
+using YaronEfrat.Yiyo.Application.Validators;
 using YaronEfrat.Yiyo.Domain.Reflection.Models;
 using YaronEfrat.Yiyo.Domain.Reflection.Models.Entities;
 
@@ -31,7 +32,8 @@ internal class AddMottoCommandHandlerTests
 
         _addMottoCommandHandler = new AddMottoCommandHandler(_dbContextMock.Object,
             new MottoDbEntityToDomainEntityMapper(),
-            new MottoDomainEntityToDbEntityMapper());
+            new MottoDomainEntityToDbEntityMapper(),
+            new CommandValidator<MottoEntity>(null!));
     }
 
     private void InitializeDbSet(IList<MottoEntity> mottoEntities)
@@ -62,7 +64,7 @@ internal class AddMottoCommandHandlerTests
         _dbSetMock.Verify(dsm => dsm.AddAsync(motto, default), Times.Once);
         _dbContextMock.Verify(cm => cm.SaveChangesAsync(default), Times.Once);
         motto.ID.Should().BeGreaterThan(0);
-        motto.Content.Should().Be(mottoEntity.Content.Trim());
+        motto.Content.Should().Be(mottoEntity.Content?.Trim());
     }
 
     [TestCaseSource(typeof(DbEntitiesTestCases), nameof(DbEntitiesTestCases.Mottos))]

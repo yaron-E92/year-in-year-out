@@ -2,6 +2,7 @@
 
 using YaronEfrat.Yiyo.Application.Interfaces;
 using YaronEfrat.Yiyo.Application.Models;
+using YaronEfrat.Yiyo.Application.Validators;
 
 namespace YaronEfrat.Yiyo.Application.Commands.Sources;
 
@@ -16,14 +17,17 @@ public class AddSourceCommandHandler : IRequestHandler<AddSourceCommand, SourceE
 {
     private readonly IApplicationDbContext _context;
 
-    public AddSourceCommandHandler(IApplicationDbContext context)
+    private readonly ICommandValidator<SourceEntity> _commandValidator;
+
+    public AddSourceCommandHandler(IApplicationDbContext context, ICommandValidator<SourceEntity> commandValidator)
     {
         _context = context;
+        _commandValidator = commandValidator;
     }
 
     public async Task<SourceEntity> Handle(AddSourceCommand request, CancellationToken cancellationToken = default)
     {
-        if (!request.IsValidAddCommand())
+        if (!await _commandValidator.IsValidAddCommand(request))
         {
             return null!;
         }

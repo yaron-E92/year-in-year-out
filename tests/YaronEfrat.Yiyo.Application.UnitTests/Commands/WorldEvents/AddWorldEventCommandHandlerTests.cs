@@ -13,6 +13,7 @@ using YaronEfrat.Yiyo.Application.Commands.WorldEvents;
 using YaronEfrat.Yiyo.Application.Interfaces;
 using YaronEfrat.Yiyo.Application.Mappers.WorldEvents;
 using YaronEfrat.Yiyo.Application.Models;
+using YaronEfrat.Yiyo.Application.Validators;
 using YaronEfrat.Yiyo.Domain.Reflection.Models;
 using YaronEfrat.Yiyo.Domain.Reflection.Models.Entities;
 
@@ -41,7 +42,8 @@ internal class AddWorldEventCommandHandlerTests
         _dbContextMock.Setup(mock => mock.Sources)
             .Returns(_sourcesMock.Object);
 
-        _addSourceCommandHandler = new AddSourceCommandHandler(_dbContextMock.Object);
+        _addSourceCommandHandler = new AddSourceCommandHandler(_dbContextMock.Object,
+            new CommandValidator<SourceEntity>(null!));
         _updateSourceCommandHandler = new UpdateSourceCommandHandler(_dbContextMock.Object);
 
         _mediatorMock = new Mock<IMediator>();
@@ -55,7 +57,8 @@ internal class AddWorldEventCommandHandlerTests
         _addWorldEventCommandHandler = new AddWorldEventCommandHandler(_dbContextMock.Object,
             new WorldEventDbEntityToDomainEntityMapper(),
             new WorldEventDomainEntityToDbEntityMapper(),
-            _mediatorMock.Object);
+            _mediatorMock.Object,
+            new CommandValidator<WorldEventEntity>(null!));
     }
 
     private void InitializeDbSet(IList<WorldEventEntity> worldEventEntities)
@@ -96,7 +99,7 @@ internal class AddWorldEventCommandHandlerTests
         _dbSetMock.Verify(dsm => dsm.AddAsync(worldEvent, default), Times.Once);
         _dbContextMock.Verify(cm => cm.SaveChangesAsync(default), Times.Once);
         worldEvent.ID.Should().BeGreaterThan(0);
-        worldEvent.Title.Should().Be(worldEventEntity.Title.Trim());
+        worldEvent.Title.Should().Be(worldEventEntity.Title?.Trim());
         worldEvent.Sources.Should().BeEquivalentTo(worldEventEntity.Sources);
     }
 
