@@ -5,32 +5,32 @@ using Microsoft.EntityFrameworkCore;
 using YaronEfrat.Yiyo.Application.Interfaces;
 using YaronEfrat.Yiyo.Application.Models;
 
-namespace YaronEfrat.Yiyo.Application.Queries.PersonalEvents;
+namespace YaronEfrat.Yiyo.Application.Queries.Feelings;
 
-public class GetPersonalEventListQuery : IRequest<PersonalEventEntity[]>
+public class GetFeelingListQuery : IRequest<FeelingEntity[]>
 {
     public IReadOnlySet<int> Ids { get; init; } = default!;
 }
 
-public class GetPersonalEventListQueryHandler : IRequestHandler<GetPersonalEventListQuery, PersonalEventEntity[]>
+public class GetFeelingListQueryHandler : IRequestHandler<GetFeelingListQuery, FeelingEntity[]>
 {
     private readonly IApplicationDbContext _context;
 
-    public GetPersonalEventListQueryHandler(IApplicationDbContext context)
+    public GetFeelingListQueryHandler(IApplicationDbContext context)
     {
         _context = context;
     }
 
-    public async Task<PersonalEventEntity[]> Handle(GetPersonalEventListQuery request,
+    public async Task<FeelingEntity[]> Handle(GetFeelingListQuery request,
         CancellationToken cancellationToken = default)
     {
         if (request.Ids == null!)
         {
-            return await _context.PersonalEvents.ToArrayAsync(cancellationToken);
+            return await _context.Feelings.ToArrayAsync(cancellationToken);
         }
 
         // TODO [#18]: add query validator to validate all ids are positive
-        return await _context.PersonalEvents
+        return await _context.Feelings
             .Where(pe => request.Ids.Contains(pe.ID))
             .ToArrayAsync(cancellationToken);
     }

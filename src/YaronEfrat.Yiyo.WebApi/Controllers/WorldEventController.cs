@@ -3,7 +3,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 using YaronEfrat.Yiyo.Application.Models;
-using YaronEfrat.Yiyo.Application.Queries;
+using YaronEfrat.Yiyo.Application.Queries.WorldEvents;
 using YaronEfrat.Yiyo.Domain.Reflection.Models;
 
 namespace YaronEfrat.Yiyo.WebApi.Controllers;

@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 using YaronEfrat.Yiyo.Application.Interfaces;
 using YaronEfrat.Yiyo.Application.Models;
-using YaronEfrat.Yiyo.Application.Queries;
+using YaronEfrat.Yiyo.Application.Queries.WorldEvents;
 
 namespace YaronEfrat.Yiyo.Application.UnitTests.Queries;
 
