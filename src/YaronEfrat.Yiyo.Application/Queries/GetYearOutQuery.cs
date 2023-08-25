@@ -16,6 +16,14 @@ public class GetYearOutQueryHandler : IRequestHandler<GetYearOutQuery, YearOutEn
 {
     private readonly IApplicationDbContext _context;
 
+    public IQueryable<YearOutEntity> YearOutQueryable =>
+        _context.YearOuts
+            .Include(e => e.Feelings)
+            .Include(e => e.Motto)
+            .Include(e => e.PersonalEvents)
+            .AsSplitQuery()
+            .AsNoTracking();
+
     public GetYearOutQueryHandler(IApplicationDbContext context)
     {
         _context = context;
@@ -23,7 +31,7 @@ public class GetYearOutQueryHandler : IRequestHandler<GetYearOutQuery, YearOutEn
 
     public async Task<YearOutEntity> Handle(GetYearOutQuery request, CancellationToken cancellationToken = default)
     {
-        return (await _context.YearOuts.AsNoTracking()
+        return (await YearOutQueryable
             .SingleOrDefaultAsync(yearOut => yearOut.ID.Equals(request.Id),
             cancellationToken))!;
     }
