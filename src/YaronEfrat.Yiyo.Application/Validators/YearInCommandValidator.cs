@@ -1,12 +1,14 @@
 ﻿using MediatR;
 
+using Microsoft.Extensions.Logging;
+
 using YaronEfrat.Yiyo.Application.Models;
 
 namespace YaronEfrat.Yiyo.Application.Validators;
 
 public class YearInCommandValidator : CommandValidator<YearInEntity>
 {
-    public YearInCommandValidator(IMediator mediator) : base(mediator)
+    public YearInCommandValidator(IMediator mediator, ILogger<YearInCommandValidator> logger) : base(mediator, logger)
     { }
 
     public override async Task<bool> IsValidAddCommand(IRequest<YearInEntity> request)

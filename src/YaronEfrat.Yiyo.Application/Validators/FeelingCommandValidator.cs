@@ -1,12 +1,14 @@
 ﻿using MediatR;
 
+using Microsoft.Extensions.Logging;
+
 using YaronEfrat.Yiyo.Application.Models;
 
 namespace YaronEfrat.Yiyo.Application.Validators;
 
 public class FeelingCommandValidator : CommandValidator<FeelingEntity>
 {
-    public FeelingCommandValidator(IMediator mediator) : base(mediator)
+    public FeelingCommandValidator(IMediator mediator, ILogger<FeelingCommandValidator> logger) : base(mediator, logger)
     { }
 
     public override async Task<bool> IsValidAddCommand(IRequest<FeelingEntity> request)
