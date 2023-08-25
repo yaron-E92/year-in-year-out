@@ -43,6 +43,9 @@ public class AddFeelingCommandHandler : IRequestHandler<AddFeelingCommand, Feeli
         domainFeeling.Validate();
 
         _domainToDbMapper.Map(domainFeeling, feelingEntity);
+
+        _context.PersonalEvents.AttachRange(feelingEntity.PersonalEvents);
+
         await _context.Feelings.AddAsync(feelingEntity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         return feelingEntity;
