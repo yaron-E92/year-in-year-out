@@ -26,7 +26,17 @@ public class CommandValidator<T> : ICommandValidator<T> where T : class, IDbEnti
 
     public virtual Task<bool> IsValidAddCommand(IRequest<T> request)
     {
-        return Task.FromResult(request != null! && request.GetRequestContent() is { ID: 0 });
+        bool isRequestNonNull = request != null!;
+        bool isIdNonZero = request?.GetRequestContent() is { ID: 0 };
+        if (!isRequestNonNull)
+        {
+            _logger.LogError("Request is null");
+        }
+        else if (!isIdNonZero)
+        {
+            _logger.LogError("Entity's id is non zero in an add command");
+        }
+        return Task.FromResult(isRequestNonNull && isIdNonZero);
     }
 
     protected internal async Task<bool> AreFeelingsConsistent(IList<FeelingEntity> entityFeelings)
