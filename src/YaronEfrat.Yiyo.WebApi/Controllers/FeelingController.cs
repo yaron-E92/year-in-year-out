@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 using YaronEfrat.Yiyo.Application.Commands.Feelings;
 using YaronEfrat.Yiyo.Application.Models;
-using YaronEfrat.Yiyo.Application.Queries;
 using YaronEfrat.Yiyo.Application.Queries.Feelings;
 using YaronEfrat.Yiyo.Domain.Reflection.Models;
 
@@ -47,7 +46,10 @@ public class FeelingController : ControllerBase
         try
         {
             feelingEntity = await _mediator.Send(new AddFeelingCommand { FeelingEntity = feelingEntity });
-            return Created(new Uri($"{this.ControllerRoute()}/{feelingEntity.ID}"), feelingEntity);
+            return feelingEntity != null!
+                ? Created(new Uri($"{this.ControllerRoute()}/{feelingEntity.ID}"),
+                    feelingEntity)
+                : BadRequest();
         }
         catch (EntityException e)
         {

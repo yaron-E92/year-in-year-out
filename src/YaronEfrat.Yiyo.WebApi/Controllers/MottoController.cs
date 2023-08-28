@@ -46,7 +46,10 @@ public class MottoController : ControllerBase
         try
         {
             mottoEntity = await _mediator.Send(new AddMottoCommand {MottoEntity = mottoEntity});
-            return Created(new Uri($"{this.ControllerRoute()}/{mottoEntity.ID}"), mottoEntity);
+            return mottoEntity != null!
+                ? Created(new Uri($"{this.ControllerRoute()}/{mottoEntity.ID}"),
+                    mottoEntity)
+                : BadRequest();
         }
         catch (EntityException e)
         {

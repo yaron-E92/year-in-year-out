@@ -46,7 +46,10 @@ public class PersonalEventController : ControllerBase
         try
         {
             personalEventEntity = await _mediator.Send(new AddPersonalEventCommand { PersonalEventEntity = personalEventEntity });
-            return Created(new Uri($"{this.ControllerRoute()}/{personalEventEntity.ID}"), personalEventEntity);
+            return personalEventEntity != null!
+                ? Created(new Uri($"{this.ControllerRoute()}/{personalEventEntity.ID}"),
+                    personalEventEntity)
+                : BadRequest();
         }
         catch (EntityException e)
         {
