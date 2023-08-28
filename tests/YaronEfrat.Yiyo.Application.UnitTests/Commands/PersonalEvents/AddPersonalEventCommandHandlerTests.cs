@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 using Moq;
 
@@ -33,7 +34,8 @@ internal class AddPersonalEventCommandHandlerTests
         _addPersonalEventCommandHandler = new AddPersonalEventCommandHandler(_dbContextMock.Object,
             new PersonalEventDbEntityToDomainEntityMapper(),
             new PersonalEventDomainEntityToDbEntityMapper(),
-            new CommandValidator<PersonalEventEntity>(null!));
+            new CommandValidator<PersonalEventEntity>(null!,
+                new Mock<ILogger<CommandValidator<PersonalEventEntity>>>().Object));
     }
 
     private void InitializeDbSet(IList<PersonalEventEntity> personalEventEntities)

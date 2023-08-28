@@ -27,12 +27,14 @@ public class GetPersonalEventQueryHandler : IRequestHandler<GetPersonalEventQuer
     {
         if (request.Id > 0)
         {
-            return (await _context.PersonalEvents.SingleOrDefaultAsync(pe => pe.ID.Equals(request.Id),
+            return (await _context.PersonalEvents.AsNoTracking()
+                .SingleOrDefaultAsync(pe => pe.ID.Equals(request.Id),
                 cancellationToken))!;
         }
 
         return (!string.IsNullOrWhiteSpace(request.Title)
-            ? await _context.PersonalEvents.SingleOrDefaultAsync(pe => pe.Title!.Equals(request.Title),
+            ? await _context.PersonalEvents.AsNoTracking()
+                .SingleOrDefaultAsync(pe => pe.Title!.Equals(request.Title),
                 cancellationToken)
             : null)!;
     }

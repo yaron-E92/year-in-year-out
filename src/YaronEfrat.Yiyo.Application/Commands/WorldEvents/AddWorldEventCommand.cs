@@ -42,15 +42,15 @@ public class AddWorldEventCommandHandler : IRequestHandler<AddWorldEventCommand,
             return null!;
         }
 
-        WorldEventEntity worldEventEntity = request.WorldEventEntity;
-        WorldEvent domainWorldEvent = _dbToDomainMapper.Map(worldEventEntity);
-        domainWorldEvent.Validate();
+        WorldEventEntity dbEntity = request.WorldEventEntity;
+        WorldEvent domainEntity = _dbToDomainMapper.Map(dbEntity);
+        domainEntity.Validate();
 
-        _domainToDbMapper.Map(domainWorldEvent, worldEventEntity);
-        await HandleSources(worldEventEntity.Sources, cancellationToken);
-        await _context.WorldEvents.AddAsync(worldEventEntity, cancellationToken);
+        _domainToDbMapper.Map(domainEntity, dbEntity);
+        await HandleSources(dbEntity.Sources, cancellationToken);
+        await _context.WorldEvents.AddAsync(dbEntity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-        return worldEventEntity;
+        return dbEntity;
     }
 
     private async Task HandleSources(IEnumerable<SourceEntity> sources, CancellationToken cancellationToken)

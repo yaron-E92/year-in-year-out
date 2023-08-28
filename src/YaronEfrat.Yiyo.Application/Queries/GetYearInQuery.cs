@@ -16,6 +16,15 @@ public class GetYearInQueryHandler : IRequestHandler<GetYearInQuery, YearInEntit
 {
     private readonly IApplicationDbContext _context;
 
+    private IQueryable<YearInEntity> YearInQueryable =>
+        _context.YearIns
+            .Include(e => e.Feelings)
+            .Include(e => e.Motto)
+            .Include(e => e.PersonalEvents)
+            .Include(e => e.WorldEvents)
+            .AsSplitQuery()
+            .AsNoTracking();
+
     public GetYearInQueryHandler(IApplicationDbContext context)
     {
         _context = context;
@@ -23,7 +32,8 @@ public class GetYearInQueryHandler : IRequestHandler<GetYearInQuery, YearInEntit
 
     public async Task<YearInEntity> Handle(GetYearInQuery request, CancellationToken cancellationToken = default)
     {
-        return (await _context.YearIns.SingleOrDefaultAsync(yearIn => yearIn.ID.Equals(request.Id),
+        return (await YearInQueryable
+            .SingleOrDefaultAsync(yearIn => yearIn.ID.Equals(request.Id),
             cancellationToken))!;
     }
 }

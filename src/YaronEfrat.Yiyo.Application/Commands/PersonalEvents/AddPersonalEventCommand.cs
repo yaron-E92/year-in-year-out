@@ -40,13 +40,13 @@ public class AddPersonalEventCommandHandler : IRequestHandler<AddPersonalEventCo
             return null!;
         }
 
-        PersonalEventEntity personalEventEntity = request.PersonalEventEntity;
-        PersonalEvent domainPersonalEvent = _dbToDomainMapper.Map(personalEventEntity);
-        domainPersonalEvent.Validate();
+        PersonalEventEntity dbEntity = request.PersonalEventEntity;
+        PersonalEvent domainEntity = _dbToDomainMapper.Map(dbEntity);
+        domainEntity.Validate();
 
-        _domainToDbMapper.Map(domainPersonalEvent, personalEventEntity);
-        await _context.PersonalEvents.AddAsync(personalEventEntity, cancellationToken);
+        _domainToDbMapper.Map(domainEntity, dbEntity);
+        await _context.PersonalEvents.AddAsync(dbEntity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-        return personalEventEntity;
+        return dbEntity;
     }
 }

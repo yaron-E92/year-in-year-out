@@ -20,4 +20,15 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<YearOutEntity> YearOuts { get; set; } = default!;
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {}
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<FeelingEntity>()
+            .HasMany(e => e.PersonalEvents)
+            .WithMany();
+
+        modelBuilder.Entity<WorldEventEntity>()
+            .HasMany(e => e.Sources)
+            .WithMany();
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 using Moq;
 
@@ -48,7 +49,8 @@ internal class AddYearInCommandHandlerTests
             new WorldEventDomainEntityToDbEntityMapper());
         _addYearInCommandHandler = new AddYearInCommandHandler(_dbContextMock.Object,
             dbToDomainMapper, domainToDbMapper,
-            new CommandValidator<YearInEntity>(null!));
+            new CommandValidator<YearInEntity>(null!,
+                new Mock<ILogger<CommandValidator<YearInEntity>>>().Object));
     }
 
     private void InitializeDbSet(IList<YearInEntity> yearInEntities)
@@ -56,6 +58,14 @@ internal class AddYearInCommandHandlerTests
         _dbSetMock = TestFixtures.DbSetMock(yearInEntities);
         _dbContextMock.Setup(mock => mock.YearIns)
             .Returns(_dbSetMock.Object);
+        _dbContextMock.Setup(mock => mock.Feelings)
+            .Returns(TestFixtures.DbSetMock(DbEntitiesTestCases.Feelings).Object);
+        _dbContextMock.Setup(mock => mock.Mottos)
+            .Returns(TestFixtures.DbSetMock(DbEntitiesTestCases.Mottos).Object);
+        _dbContextMock.Setup(mock => mock.PersonalEvents)
+            .Returns(TestFixtures.DbSetMock(DbEntitiesTestCases.PersonalEvents).Object);
+        _dbContextMock.Setup(mock => mock.WorldEvents)
+            .Returns(TestFixtures.DbSetMock(DbEntitiesTestCases.WorldEvents).Object);
     }
 
     [TestCaseSource(typeof(DbEntitiesTestCases), nameof(DbEntitiesTestCases.YearIns))]

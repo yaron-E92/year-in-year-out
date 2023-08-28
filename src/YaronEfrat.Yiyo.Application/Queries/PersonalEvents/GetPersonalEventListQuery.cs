@@ -26,11 +26,11 @@ public class GetPersonalEventListQueryHandler : IRequestHandler<GetPersonalEvent
     {
         if (request.Ids == null!)
         {
-            return await _context.PersonalEvents.ToArrayAsync(cancellationToken);
+            return await _context.PersonalEvents.AsNoTracking().ToArrayAsync(cancellationToken);
         }
 
         // TODO [#18]: add query validator to validate all ids are positive
-        return await _context.PersonalEvents
+        return await _context.PersonalEvents.AsNoTracking()
             .Where(pe => request.Ids.Contains(pe.ID))
             .ToArrayAsync(cancellationToken);
     }

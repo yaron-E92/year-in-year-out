@@ -26,11 +26,11 @@ public class GetFeelingListQueryHandler : IRequestHandler<GetFeelingListQuery, F
     {
         if (request.Ids == null!)
         {
-            return await _context.Feelings.ToArrayAsync(cancellationToken);
+            return await _context.Feelings.AsNoTracking().ToArrayAsync(cancellationToken);
         }
 
         // TODO [#18]: add query validator to validate all ids are positive
-        return await _context.Feelings
+        return await _context.Feelings.AsNoTracking()
             .Where(pe => request.Ids.Contains(pe.ID))
             .ToArrayAsync(cancellationToken);
     }

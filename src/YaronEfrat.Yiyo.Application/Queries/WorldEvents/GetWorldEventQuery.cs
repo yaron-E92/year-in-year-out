@@ -18,6 +18,9 @@ public class GetWorldEventQueryHandler : IRequestHandler<GetWorldEventQuery, Wor
 {
     private readonly IApplicationDbContext _context;
 
+    public IQueryable<WorldEventEntity> WorldEventQueryable =>
+        _context.WorldEvents.Include(e => e.Sources).AsNoTracking();
+
     public GetWorldEventQueryHandler(IApplicationDbContext context)
     {
         _context = context;
@@ -27,12 +30,14 @@ public class GetWorldEventQueryHandler : IRequestHandler<GetWorldEventQuery, Wor
     {
         if (request.Id > 0)
         {
-            return (await _context.WorldEvents.SingleOrDefaultAsync(we => we.ID.Equals(request.Id),
+            return (await WorldEventQueryable
+                .SingleOrDefaultAsync(we => we.ID.Equals(request.Id),
                 cancellationToken))!;
         }
 
         return (!string.IsNullOrWhiteSpace(request.Title)
-            ? await _context.WorldEvents.SingleOrDefaultAsync(we => we.Title!.Equals(request.Title), cancellationToken)
+            ? await WorldEventQueryable
+                .SingleOrDefaultAsync(we => we.Title!.Equals(request.Title), cancellationToken)
             : null)!;
     }
 }

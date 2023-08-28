@@ -23,6 +23,7 @@ public class GetMottoQueryHandler : IRequestHandler<GetMottoQuery, MottoEntity>
 
     public async Task<MottoEntity> Handle(GetMottoQuery request, CancellationToken cancellationToken = default)
     {
-        return (await _context.Mottos.SingleOrDefaultAsync(motto => motto.ID.Equals(request.Id), cancellationToken))!;
+        return (await _context.Mottos.AsNoTracking()
+            .SingleOrDefaultAsync(motto => motto.ID.Equals(request.Id), cancellationToken))!;
     }
 }

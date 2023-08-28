@@ -37,15 +37,27 @@ public class AddYearOutCommandHandler : IRequestHandler<AddYearOutCommand, YearO
             return null!;
         }
 
-        YearOutEntity yearOutEntity = request.YearOutEntity;
-        YearOut yearOut = _dbToDomainMapper.Map(yearOutEntity);
-        yearOut.Validate();
+        YearOutEntity dbEntity = request.YearOutEntity;
+        YearOut domainEntity = _dbToDomainMapper.Map(dbEntity);
+        domainEntity.Validate();
 
-        _domainToDbMapper.Map(yearOut, yearOutEntity);
+        _domainToDbMapper.Map(domainEntity, dbEntity);
 
-        await _context.YearOuts.AddAsync(yearOutEntity, cancellationToken);
+        AttachRelations(dbEntity);
+
+        await _context.YearOuts.AddAsync(dbEntity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return yearOutEntity;
+        return dbEntity;
+    }
+
+    private void AttachRelations(YearOutEntity yearOutEntity)
+    {
+        _context.Feelings.AttachRange(yearOutEntity.Feelings);
+        if (yearOutEntity.Motto != null)
+        {
+            _context.Mottos.Attach(yearOutEntity.Motto);
+        }
+        _context.PersonalEvents.AttachRange(yearOutEntity.PersonalEvents);
     }
 }

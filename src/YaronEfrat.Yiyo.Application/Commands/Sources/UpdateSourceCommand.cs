@@ -28,24 +28,24 @@ public class UpdateSourceCommandHandler : IRequestHandler<UpdateSourceCommand, S
             return null!;
         }
 
-        SourceEntity sourceEntity = request.SourceEntity;
-        if (sourceEntity is { ID: <=0 } or null)
+        SourceEntity dbEntity = request.SourceEntity;
+        if (dbEntity is { ID: <=0 } or null)
         {
             return null!;
         }
 
-        SourceEntity existingSourceEntity = _context.Sources.SingleOrDefault(s => s.ID == sourceEntity.ID, null!);
-        if (existingSourceEntity == null!)
+        SourceEntity existingDbEntity = _context.Sources.SingleOrDefault(s => s.ID == dbEntity.ID, null!);
+        if (existingDbEntity == null!)
         {
             return null!;
         }
 
-        existingSourceEntity.Url = sourceEntity.Url;
+        existingDbEntity.Url = dbEntity.Url;
         if (!request.IsChildCommand)
         {
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        return existingSourceEntity;
+        return existingDbEntity;
     }
 }

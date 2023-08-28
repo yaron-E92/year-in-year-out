@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 using Moq;
 
@@ -34,7 +35,8 @@ internal class AddFeelingCommandHandlerTests
         _addFeelingCommandHandler = new AddFeelingCommandHandler(_dbContextMock.Object,
             new FeelingDbEntityToDomainEntityMapper(new PersonalEventDbEntityToDomainEntityMapper()),
             new FeelingDomainEntityToDbEntityMapper(new PersonalEventDomainEntityToDbEntityMapper()),
-            new CommandValidator<FeelingEntity>(null));
+            new CommandValidator<FeelingEntity>(null!,
+                new Mock<ILogger<CommandValidator<FeelingEntity>>>().Object));
     }
 
     private void InitializeDbSet(IList<FeelingEntity> feelingEntities)
@@ -42,6 +44,8 @@ internal class AddFeelingCommandHandlerTests
         _dbSetMock = TestFixtures.DbSetMock(feelingEntities);
         _dbContextMock.Setup(mock => mock.Feelings)
             .Returns(_dbSetMock.Object);
+        _dbContextMock.Setup(mock => mock.PersonalEvents)
+            .Returns(TestFixtures.DbSetMock(DbEntitiesTestCases.PersonalEvents).Object);
     }
 
     [TestCaseSource(typeof(DbEntitiesTestCases), nameof(DbEntitiesTestCases.Feelings))]

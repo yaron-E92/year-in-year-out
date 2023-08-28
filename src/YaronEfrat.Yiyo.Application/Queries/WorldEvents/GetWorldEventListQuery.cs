@@ -26,11 +26,11 @@ public class GetWorldEventListQueryHandler : IRequestHandler<GetWorldEventListQu
     {
         if (request.Ids == null!)
         {
-            return await _context.WorldEvents.ToArrayAsync(cancellationToken);
+            return await _context.WorldEvents.AsNoTracking().ToArrayAsync(cancellationToken);
         }
 
         // TODO [#18]: add query validator to validate all ids are positive
-        return await _context.WorldEvents
+        return await _context.WorldEvents.AsNoTracking()
             .Where(pe => request.Ids.Contains(pe.ID))
             .ToArrayAsync(cancellationToken);
     }

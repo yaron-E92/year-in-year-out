@@ -23,7 +23,8 @@ public class GetSourceQueryHandler : IRequestHandler<GetSourceQuery, SourceEntit
 
     public async Task<SourceEntity> Handle(GetSourceQuery request, CancellationToken cancellationToken = default)
     {
-        return (await _context.Sources.SingleOrDefaultAsync(source => source.ID.Equals(request.Id),
+        return (await _context.Sources.AsNoTracking()
+            .SingleOrDefaultAsync(source => source.ID.Equals(request.Id),
             cancellationToken))!;
     }
 }

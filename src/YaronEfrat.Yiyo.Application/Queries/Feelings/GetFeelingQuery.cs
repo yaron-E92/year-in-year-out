@@ -18,6 +18,9 @@ public class GetFeelingQueryHandler : IRequestHandler<GetFeelingQuery, FeelingEn
 {
     private readonly IApplicationDbContext _context;
 
+    private IQueryable<FeelingEntity> FeelingsQueryable =>
+        _context.Feelings.Include(e => e.PersonalEvents).AsNoTracking();
+
     public GetFeelingQueryHandler(IApplicationDbContext context)
     {
         _context = context;
@@ -27,12 +30,15 @@ public class GetFeelingQueryHandler : IRequestHandler<GetFeelingQuery, FeelingEn
     {
         if (request.Id > 0)
         {
-            return (await _context.Feelings.SingleOrDefaultAsync(
-                feel => feel.ID.Equals(request.Id), cancellationToken))!;
+            return (await FeelingsQueryable
+                .SingleOrDefaultAsync(
+                    feel => feel.ID.Equals(request.Id), cancellationToken))!;
         }
 
         return (!string.IsNullOrWhiteSpace(request.Title)
-            ? await _context.Feelings.SingleOrDefaultAsync(feel => feel.Title!.Equals(request.Title), cancellationToken)
+            ? await FeelingsQueryable
+                .SingleOrDefaultAsync(feel => feel.Title!.Equals(request.Title),
+                    cancellationToken)
             : null)!;
     }
 }
