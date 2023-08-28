@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 using Moq;
 
@@ -33,7 +34,8 @@ internal class AddMottoCommandHandlerTests
         _addMottoCommandHandler = new AddMottoCommandHandler(_dbContextMock.Object,
             new MottoDbEntityToDomainEntityMapper(),
             new MottoDomainEntityToDbEntityMapper(),
-            new CommandValidator<MottoEntity>(null!));
+            new CommandValidator<MottoEntity>(null!,
+                new Mock<ILogger<CommandValidator<MottoEntity>>>().Object));
     }
 
     private void InitializeDbSet(IList<MottoEntity> mottoEntities)

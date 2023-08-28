@@ -3,6 +3,7 @@
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 using Moq;
 
@@ -43,7 +44,8 @@ internal class AddWorldEventCommandHandlerTests
             .Returns(_sourcesMock.Object);
 
         _addSourceCommandHandler = new AddSourceCommandHandler(_dbContextMock.Object,
-            new CommandValidator<SourceEntity>(null!));
+            new CommandValidator<SourceEntity>(null!,
+                new Mock<ILogger<CommandValidator<SourceEntity>>>().Object));
         _updateSourceCommandHandler = new UpdateSourceCommandHandler(_dbContextMock.Object);
 
         _mediatorMock = new Mock<IMediator>();
@@ -58,7 +60,8 @@ internal class AddWorldEventCommandHandlerTests
             new WorldEventDbEntityToDomainEntityMapper(),
             new WorldEventDomainEntityToDbEntityMapper(),
             _mediatorMock.Object,
-            new CommandValidator<WorldEventEntity>(null!));
+            new CommandValidator<WorldEventEntity>(null!,
+                new Mock<ILogger<CommandValidator<WorldEventEntity>>>().Object));
     }
 
     private void InitializeDbSet(IList<WorldEventEntity> worldEventEntities)

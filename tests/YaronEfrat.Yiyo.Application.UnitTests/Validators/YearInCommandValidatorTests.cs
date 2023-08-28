@@ -2,6 +2,8 @@
 
 using MediatR;
 
+using Microsoft.Extensions.Logging;
+
 using Moq;
 
 using NUnit.Framework;
@@ -62,7 +64,8 @@ internal class YearInCommandValidatorTests
             .Returns(async (GetWorldEventListQuery q, CancellationToken token) =>
                 await _getWorldEventListQueryHandler.Handle(q, token));
 
-        _validator = new YearInCommandValidator(_mediatorMock.Object);
+        _validator = new YearInCommandValidator(_mediatorMock.Object,
+            new Mock<ILogger<YearInCommandValidator>>().Object);
     }
 
     [TestCaseSource(typeof(DbEntitiesTestCases), nameof(DbEntitiesTestCases.YearIns))]

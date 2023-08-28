@@ -2,6 +2,7 @@
 
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 using Moq;
 
@@ -40,7 +41,8 @@ internal class FeelingCommandValidatorTests
             .Returns(async (GetPersonalEventListQuery q, CancellationToken token) =>
                 await _getPersonalEventListQueryHandler.Handle(q, token));
 
-        _validator = new FeelingCommandValidator(_mediatorMock.Object);
+        _validator = new FeelingCommandValidator(_mediatorMock.Object,
+            new Mock<ILogger<FeelingCommandValidator>>().Object);
     }
 
     [TestCaseSource(typeof(DbEntitiesTestCases), nameof(DbEntitiesTestCases.Feelings))]

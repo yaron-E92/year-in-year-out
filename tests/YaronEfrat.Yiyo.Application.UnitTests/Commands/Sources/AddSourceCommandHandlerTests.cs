@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 using Moq;
 
@@ -28,7 +29,8 @@ internal class AddSourceCommandHandlerTests
         InitializeDbSet(new List<SourceEntity>());
 
         _addSourceCommandHandler = new AddSourceCommandHandler(_dbContextMock.Object,
-            new CommandValidator<SourceEntity>(null!));
+            new CommandValidator<SourceEntity>(null!,
+                new Mock<ILogger<CommandValidator<SourceEntity>>>().Object));
     }
 
     private void InitializeDbSet(IList<SourceEntity> sourceEntities)

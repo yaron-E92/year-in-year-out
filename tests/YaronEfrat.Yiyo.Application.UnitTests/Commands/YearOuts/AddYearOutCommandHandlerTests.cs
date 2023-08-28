@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 using Moq;
 
@@ -45,7 +46,8 @@ internal class AddYearOutCommandHandlerTests
             personalEventDomainToDbMapper);
         _addYearOutCommandHandler = new AddYearOutCommandHandler(_dbContextMock.Object,
             dbToDomainMapper, domainToDbMapper,
-            new CommandValidator<YearOutEntity>(null!));
+            new CommandValidator<YearOutEntity>(null!,
+                new Mock<ILogger<CommandValidator<YearOutEntity>>>().Object));
     }
 
     private void InitializeDbSet(IList<YearOutEntity> yearOutEntities)
@@ -53,6 +55,12 @@ internal class AddYearOutCommandHandlerTests
         _dbSetMock = TestFixtures.DbSetMock(yearOutEntities);
         _dbContextMock.Setup(mock => mock.YearOuts)
             .Returns(_dbSetMock.Object);
+        _dbContextMock.Setup(mock => mock.Feelings)
+            .Returns(TestFixtures.DbSetMock(DbEntitiesTestCases.Feelings).Object);
+        _dbContextMock.Setup(mock => mock.Mottos)
+            .Returns(TestFixtures.DbSetMock(DbEntitiesTestCases.Mottos).Object);
+        _dbContextMock.Setup(mock => mock.PersonalEvents)
+            .Returns(TestFixtures.DbSetMock(DbEntitiesTestCases.PersonalEvents).Object);
     }
 
     [TestCaseSource(typeof(DbEntitiesTestCases), nameof(DbEntitiesTestCases.YearOuts))]
