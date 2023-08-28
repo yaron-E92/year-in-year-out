@@ -39,13 +39,13 @@ public class AddMottoCommandHandler : IRequestHandler<AddMottoCommand, MottoEnti
             return null!;
         }
 
-        MottoEntity mottoEntity = request.MottoEntity;
-        Motto domainMotto = _dbToDomainMapper.Map(mottoEntity);
-        domainMotto.Validate();
+        MottoEntity dbEntity = request.MottoEntity;
+        Motto domainEntity = _dbToDomainMapper.Map(dbEntity);
+        domainEntity.Validate();
 
-        _domainToDbMapper.Map(domainMotto, mottoEntity);
-        await _context.Mottos.AddAsync(mottoEntity, cancellationToken);
+        _domainToDbMapper.Map(domainEntity, dbEntity);
+        await _context.Mottos.AddAsync(dbEntity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-        return mottoEntity;
+        return dbEntity;
     }
 }

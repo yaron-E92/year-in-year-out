@@ -37,18 +37,18 @@ public class AddYearInCommandHandler : IRequestHandler<AddYearInCommand, YearInE
             return null!;
         }
 
-        YearInEntity yearInEntity = request.YearInEntity;
-        YearIn yearIn = _dbToDomainMapper.Map(yearInEntity);
-        yearIn.Validate();
+        YearInEntity dbEntity = request.YearInEntity;
+        YearIn domainEntity = _dbToDomainMapper.Map(dbEntity);
+        domainEntity.Validate();
 
-        _domainToDbMapper.Map(yearIn, yearInEntity);
+        _domainToDbMapper.Map(domainEntity, dbEntity);
 
-        AttachRelations(yearInEntity);
+        AttachRelations(dbEntity);
 
-        await _context.YearIns.AddAsync(yearInEntity, cancellationToken);
+        await _context.YearIns.AddAsync(dbEntity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return yearInEntity;
+        return dbEntity;
     }
 
     private void AttachRelations(YearInEntity yearInEntity)

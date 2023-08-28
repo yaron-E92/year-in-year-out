@@ -32,13 +32,13 @@ public class AddSourceCommandHandler : IRequestHandler<AddSourceCommand, SourceE
             return null!;
         }
 
-        SourceEntity sourceEntity = request.SourceEntity;
-        await _context.Sources.AddAsync(sourceEntity, cancellationToken);
+        SourceEntity dbEntity = request.SourceEntity;
+        await _context.Sources.AddAsync(dbEntity, cancellationToken);
         if (!request.IsChildCommand)
         {
             await _context.SaveChangesAsync(cancellationToken);
         }
         
-        return sourceEntity;
+        return dbEntity;
     }
 }

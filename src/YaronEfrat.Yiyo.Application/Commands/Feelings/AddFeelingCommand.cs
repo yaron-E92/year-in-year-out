@@ -38,16 +38,16 @@ public class AddFeelingCommandHandler : IRequestHandler<AddFeelingCommand, Feeli
             return null!;
         }
 
-        FeelingEntity feelingEntity = request.FeelingEntity;
-        Feeling domainFeeling = _dbToDomainMapper.Map(feelingEntity);
-        domainFeeling.Validate();
+        FeelingEntity dbEntity = request.FeelingEntity;
+        Feeling domainEntity = _dbToDomainMapper.Map(dbEntity);
+        domainEntity.Validate();
 
-        _domainToDbMapper.Map(domainFeeling, feelingEntity);
+        _domainToDbMapper.Map(domainEntity, dbEntity);
 
-        _context.PersonalEvents.AttachRange(feelingEntity.PersonalEvents);
+        _context.PersonalEvents.AttachRange(dbEntity.PersonalEvents);
 
-        await _context.Feelings.AddAsync(feelingEntity, cancellationToken);
+        await _context.Feelings.AddAsync(dbEntity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-        return feelingEntity;
+        return dbEntity;
     }
 }
