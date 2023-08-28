@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 
+using YaronEfrat.Yiyo.Application.Commands.YearOuts;
 using YaronEfrat.Yiyo.Application.Models;
 using YaronEfrat.Yiyo.Application.Queries;
 using YaronEfrat.Yiyo.Domain.Reflection.Models;
@@ -31,6 +32,24 @@ public class YearOutController : ControllerBase
         {
             YearOutEntity yearOutEntity = await _mediator.Send(new GetYearOutQuery { Id = id });
             return yearOutEntity != null! ? Ok(yearOutEntity) : NotFound();
+        }
+        catch (EntityException e)
+        {
+            _logger.LogError(e.Message);
+            return BadRequest();
+        }
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> Create([FromBody] YearOutEntity yearOutEntity)
+    {
+        try
+        {
+            yearOutEntity = await _mediator.Send(new AddYearOutCommand { YearOutEntity = yearOutEntity });
+            return yearOutEntity != null!
+                ? Created(new Uri($"{this.ControllerRoute()}/{yearOutEntity.ID}"),
+                    yearOutEntity)
+                : BadRequest();
         }
         catch (EntityException e)
         {

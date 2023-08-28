@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 
+using YaronEfrat.Yiyo.Application.Commands.YearIns;
 using YaronEfrat.Yiyo.Application.Models;
 using YaronEfrat.Yiyo.Application.Queries;
 using YaronEfrat.Yiyo.Domain.Reflection.Models;
@@ -31,6 +32,24 @@ public class YearInController : ControllerBase
         {
             YearInEntity yearInEntity = await _mediator.Send(new GetYearInQuery {Id = id});
             return yearInEntity != null! ? Ok(yearInEntity) : NotFound();
+        }
+        catch (EntityException e)
+        {
+            _logger.LogError(e.Message);
+            return BadRequest();
+        }
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> Create([FromBody] YearInEntity yearInEntity)
+    {
+        try
+        {
+            yearInEntity = await _mediator.Send(new AddYearInCommand { YearInEntity = yearInEntity });
+            return yearInEntity != null!
+                ? Created(new Uri($"{this.ControllerRoute()}/{yearInEntity.ID}"),
+                    yearInEntity)
+                : BadRequest();
         }
         catch (EntityException e)
         {
