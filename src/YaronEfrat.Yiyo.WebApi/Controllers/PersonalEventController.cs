@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 
+using YaronEfrat.Yiyo.Application.Commands.PersonalEvents;
 using YaronEfrat.Yiyo.Application.Models;
 using YaronEfrat.Yiyo.Application.Queries.PersonalEvents;
 using YaronEfrat.Yiyo.Domain.Reflection.Models;
@@ -31,6 +32,24 @@ public class PersonalEventController : ControllerBase
         {
             PersonalEventEntity personalEventEntity = await _mediator.Send(new GetPersonalEventQuery {Id = id});
             return personalEventEntity != null! ? Ok(personalEventEntity) : NotFound();
+        }
+        catch (EntityException e)
+        {
+            _logger.LogError(e.Message);
+            return BadRequest();
+        }
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> Create([FromBody] PersonalEventEntity personalEventEntity)
+    {
+        try
+        {
+            personalEventEntity = await _mediator.Send(new AddPersonalEventCommand { PersonalEventEntity = personalEventEntity });
+            return personalEventEntity != null!
+                ? Created(new Uri($"{this.ControllerRoute()}/{personalEventEntity.ID}"),
+                    personalEventEntity)
+                : BadRequest();
         }
         catch (EntityException e)
         {

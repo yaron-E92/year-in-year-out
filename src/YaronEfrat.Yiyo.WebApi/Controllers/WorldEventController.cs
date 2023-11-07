@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 
+using YaronEfrat.Yiyo.Application.Commands.WorldEvents;
 using YaronEfrat.Yiyo.Application.Models;
 using YaronEfrat.Yiyo.Application.Queries.WorldEvents;
 using YaronEfrat.Yiyo.Domain.Reflection.Models;
@@ -31,6 +32,24 @@ public class WorldEventController : ControllerBase
         {
             WorldEventEntity worldEventEntity = await _mediator.Send(new GetWorldEventQuery {Id = id});
             return worldEventEntity != null! ? Ok(worldEventEntity) : NotFound();
+        }
+        catch (EntityException e)
+        {
+            _logger.LogError(e.Message);
+            return BadRequest();
+        }
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> Create([FromBody] WorldEventEntity worldEventEntity)
+    {
+        try
+        {
+            worldEventEntity = await _mediator.Send(new AddWorldEventCommand { WorldEventEntity = worldEventEntity });
+            return worldEventEntity != null!
+                ? Created(new Uri($"{this.ControllerRoute()}/{worldEventEntity.ID}"),
+                    worldEventEntity)
+                : BadRequest();
         }
         catch (EntityException e)
         {

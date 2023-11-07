@@ -2,8 +2,8 @@
 
 using Microsoft.AspNetCore.Mvc;
 
+using YaronEfrat.Yiyo.Application.Commands.Feelings;
 using YaronEfrat.Yiyo.Application.Models;
-using YaronEfrat.Yiyo.Application.Queries;
 using YaronEfrat.Yiyo.Application.Queries.Feelings;
 using YaronEfrat.Yiyo.Domain.Reflection.Models;
 
@@ -32,6 +32,24 @@ public class FeelingController : ControllerBase
         {
             FeelingEntity feelingEntity = await _mediator.Send(new GetFeelingQuery {Id = id});
             return feelingEntity != null! ? Ok(feelingEntity) : NotFound();
+        }
+        catch (EntityException e)
+        {
+            _logger.LogError(e.Message);
+            return BadRequest();
+        }
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> Create([FromBody] FeelingEntity feelingEntity)
+    {
+        try
+        {
+            feelingEntity = await _mediator.Send(new AddFeelingCommand { FeelingEntity = feelingEntity });
+            return feelingEntity != null!
+                ? Created(new Uri($"{this.ControllerRoute()}/{feelingEntity.ID}"),
+                    feelingEntity)
+                : BadRequest();
         }
         catch (EntityException e)
         {
